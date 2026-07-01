@@ -23,7 +23,14 @@ const DB_NAME = 'noobify.db';
 let db: SQLite.SQLiteDatabase | null = null;
 
 export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
-  if (db) return db;
+  if (db) {
+    try {
+      await db.getFirstAsync('SELECT 1');
+      return db;
+    } catch {
+      db = null;
+    }
+  }
   db = await SQLite.openDatabaseAsync(DB_NAME);
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS history (
@@ -31,6 +38,7 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
       original_term TEXT NOT NULL,
       analogy TEXT NOT NULL,
       language TEXT NOT NULL,
+      category TEXT,
       timestamp INTEGER NOT NULL
     );
   `);

@@ -11,7 +11,6 @@ import {
   Surface,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as Clipboard from 'expo-clipboard';
 
 import { useThemeContext } from '@/constants/themes';
 import { useLocalLLM, type Language } from '@/hooks/useLocalLLM';
@@ -174,16 +173,17 @@ export default function TranslatorScreen() {
       console.error('Share failed:', err);
     }
   }, [generatedText, inputTerm, language]);
-
   const handleCopy = useCallback(async () => {
     if (!generatedText) return;
 
     const copyText =
       language === 'en' ? `${inputTerm}: ${generatedText}` : `${inputTerm}: ${generatedText}`;
 
-    await Clipboard.setStringAsync(copyText);
+    await Share.share({
+      message: copyText,
+      title: language === 'en' ? 'Noobify Result' : 'Noobify Ergebnis',
+    });
   }, [generatedText, inputTerm, language]);
-
   const handleClear = useCallback(() => {
     setInputTerm('');
     setHasGenerated(false);
