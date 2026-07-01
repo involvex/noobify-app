@@ -34,19 +34,24 @@ Create a new file with the `'use dom';` directive at the top:
 
 ```tsx
 // components/WebChart.tsx
-'use dom';
+'use dom'
 
-export default function WebChart({ data }: { data: number[]; dom: import('expo/dom').DOMProps }) {
-  return (
-    <div style={{ padding: 20 }}>
-      <h2>Chart Data</h2>
-      <ul>
-        {data.map((value, i) => (
-          <li key={i}>{value}</li>
-        ))}
-      </ul>
-    </div>
-  );
+export default function WebChart({
+	data,
+}: {
+	data: number[]
+	dom: import('expo/dom').DOMProps
+}) {
+	return (
+		<div style={{padding: 20}}>
+			<h2>Chart Data</h2>
+			<ul>
+				{data.map((value, i) => (
+					<li key={i}>{value}</li>
+				))}
+			</ul>
+		</div>
+	)
 }
 ```
 
@@ -63,15 +68,15 @@ export default function WebChart({ data }: { data: number[]; dom: import('expo/d
 Every DOM component receives a special `dom` prop for webview configuration. Always type it in your props:
 
 ```tsx
-'use dom';
+'use dom'
 
 interface Props {
-  content: string;
-  dom: import('expo/dom').DOMProps;
+	content: string
+	dom: import('expo/dom').DOMProps
 }
 
-export default function MyComponent({ content }: Props) {
-  return <div>{content}</div>;
+export default function MyComponent({content}: Props) {
+	return <div>{content}</div>
 }
 ```
 
@@ -103,43 +108,43 @@ Pass async functions as props to expose native functionality to the DOM componen
 
 ```tsx
 // app/index.tsx (native)
-import { Alert } from 'react-native';
-import DOMComponent from '@/components/dom-component';
+import DOMComponent from '@/components/dom-component'
+import {Alert} from 'react-native'
 
 export default function Screen() {
-  return (
-    <DOMComponent
-      showAlert={async (message: string) => {
-        Alert.alert('From Web', message);
-      }}
-      saveData={async (data: { name: string; value: number }) => {
-        // Save to native storage, database, etc.
-        console.log('Saving:', data);
-        return { success: true };
-      }}
-    />
-  );
+	return (
+		<DOMComponent
+			showAlert={async (message: string) => {
+				Alert.alert('From Web', message)
+			}}
+			saveData={async (data: {name: string; value: number}) => {
+				// Save to native storage, database, etc.
+				console.log('Saving:', data)
+				return {success: true}
+			}}
+		/>
+	)
 }
 ```
 
 ```tsx
 // components/dom-component.tsx
-'use dom';
+'use dom'
 
 interface Props {
-  showAlert: (message: string) => Promise<void>;
-  saveData: (data: { name: string; value: number }) => Promise<{ success: boolean }>;
-  dom?: import('expo/dom').DOMProps;
+	showAlert: (message: string) => Promise<void>
+	saveData: (data: {name: string; value: number}) => Promise<{success: boolean}>
+	dom?: import('expo/dom').DOMProps
 }
 
-export default function DOMComponent({ showAlert, saveData }: Props) {
-  const handleClick = async () => {
-    await showAlert('Hello from the webview!');
-    const result = await saveData({ name: 'test', value: 42 });
-    console.log('Save result:', result);
-  };
+export default function DOMComponent({showAlert, saveData}: Props) {
+	const handleClick = async () => {
+		await showAlert('Hello from the webview!')
+		const result = await saveData({name: 'test', value: 42})
+		console.log('Save result:', result)
+	}
 
-  return <button onClick={handleClick}>Trigger Native Action</button>;
+	return <button onClick={handleClick}>Trigger Native Action</button>
 }
 ```
 
@@ -149,47 +154,58 @@ DOM components can use any web library:
 
 ```tsx
 // components/syntax-highlight.tsx
-'use dom';
+'use dom'
 
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import {docco} from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import SyntaxHighlighter from 'react-syntax-highlighter'
 
 interface Props {
-  code: string;
-  language: string;
-  dom?: import('expo/dom').DOMProps;
+	code: string
+	language: string
+	dom?: import('expo/dom').DOMProps
 }
 
-export default function SyntaxHighlight({ code, language }: Props) {
-  return (
-    <SyntaxHighlighter language={language} style={docco}>
-      {code}
-    </SyntaxHighlighter>
-  );
+export default function SyntaxHighlight({code, language}: Props) {
+	return (
+		<SyntaxHighlighter
+			language={language}
+			style={docco}
+		>
+			{code}
+		</SyntaxHighlighter>
+	)
 }
 ```
 
 ```tsx
 // components/chart.tsx
-'use dom';
+'use dom'
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip} from 'recharts'
 
 interface Props {
-  data: Array<{ name: string; value: number }>;
-  dom: import('expo/dom').DOMProps;
+	data: Array<{name: string; value: number}>
+	dom: import('expo/dom').DOMProps
 }
 
-export default function Chart({ data }: Props) {
-  return (
-    <LineChart width={400} height={300} data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Line type="monotone" dataKey="value" stroke="#8884d8" />
-    </LineChart>
-  );
+export default function Chart({data}: Props) {
+	return (
+		<LineChart
+			width={400}
+			height={300}
+			data={data}
+		>
+			<CartesianGrid strokeDasharray="3 3" />
+			<XAxis dataKey="name" />
+			<YAxis />
+			<Tooltip />
+			<Line
+				type="monotone"
+				dataKey="value"
+				stroke="#8884d8"
+			/>
+		</LineChart>
+	)
 }
 ```
 
@@ -199,41 +215,49 @@ CSS imports must be in the DOM component file since they run in isolated context
 
 ```tsx
 // components/styled-component.tsx
-'use dom';
+'use dom'
 
-import '@/styles.css'; // CSS file in same directory
+import '@/styles.css' // CSS file in same directory
 
-export default function StyledComponent({ dom }: { dom: import('expo/dom').DOMProps }) {
-  return (
-    <div className="container">
-      <h1 className="title">Styled Content</h1>
-    </div>
-  );
+export default function StyledComponent({
+	dom,
+}: {
+	dom: import('expo/dom').DOMProps
+}) {
+	return (
+		<div className="container">
+			<h1 className="title">Styled Content</h1>
+		</div>
+	)
 }
 ```
 
 Or use inline styles / CSS-in-JS:
 
 ```tsx
-'use dom';
+'use dom'
 
 const styles = {
-  container: {
-    padding: 20,
-    backgroundColor: '#f0f0f0',
-  },
-  title: {
-    fontSize: 24,
-    color: '#333',
-  },
-};
+	container: {
+		padding: 20,
+		backgroundColor: '#f0f0f0',
+	},
+	title: {
+		fontSize: 24,
+		color: '#333',
+	},
+}
 
-export default function StyledComponent({ dom }: { dom: import('expo/dom').DOMProps }) {
-  return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Styled Content</h1>
-    </div>
-  );
+export default function StyledComponent({
+	dom,
+}: {
+	dom: import('expo/dom').DOMProps
+}) {
+	return (
+		<div style={styles.container}>
+			<h1 style={styles.title}>Styled Content</h1>
+		</div>
+	)
 }
 ```
 
@@ -242,19 +266,19 @@ export default function StyledComponent({ dom }: { dom: import('expo/dom').DOMPr
 The expo-router `<Link />` component and router API work inside DOM components:
 
 ```tsx
-'use dom';
+'use dom'
 
-import { Link, useRouter } from 'expo-router';
+import {Link, useRouter} from 'expo-router'
 
-export default function Navigation({ dom }: { dom: import('expo/dom').DOMProps }) {
-  const router = useRouter();
+export default function Navigation({dom}: {dom: import('expo/dom').DOMProps}) {
+	const router = useRouter()
 
-  return (
-    <nav>
-      <Link href="/about">About</Link>
-      <button onClick={() => router.push('/settings')}>Settings</button>
-    </nav>
-  );
+	return (
+		<nav>
+			<Link href="/about">About</Link>
+			<button onClick={() => router.push('/settings')}>Settings</button>
+		</nav>
+	)
 }
 ```
 
@@ -273,34 +297,39 @@ These hooks don't work directly in DOM components because they need synchronous 
 
 ```tsx
 // app/[id].tsx (native)
-import { useLocalSearchParams, usePathname } from 'expo-router';
-import DOMComponent from '@/components/dom-component';
+import {useLocalSearchParams, usePathname} from 'expo-router'
+import DOMComponent from '@/components/dom-component'
 
 export default function Screen() {
-  const { id } = useLocalSearchParams();
-  const pathname = usePathname();
+	const {id} = useLocalSearchParams()
+	const pathname = usePathname()
 
-  return <DOMComponent id={id as string} pathname={pathname} />;
+	return (
+		<DOMComponent
+			id={id as string}
+			pathname={pathname}
+		/>
+	)
 }
 ```
 
 ```tsx
 // components/dom-component.tsx
-'use dom';
+'use dom'
 
 interface Props {
-  id: string;
-  pathname: string;
-  dom?: import('expo/dom').DOMProps;
+	id: string
+	pathname: string
+	dom?: import('expo/dom').DOMProps
 }
 
-export default function DOMComponent({ id, pathname }: Props) {
-  return (
-    <div>
-      <p>Current ID: {id}</p>
-      <p>Current Path: {pathname}</p>
-    </div>
-  );
+export default function DOMComponent({id, pathname}: Props) {
+	return (
+		<div>
+			<p>Current ID: {id}</p>
+			<p>Current Path: {pathname}</p>
+		</div>
+	)
 }
 ```
 
@@ -309,12 +338,12 @@ export default function DOMComponent({ id, pathname }: Props) {
 Check if code is running in a DOM component:
 
 ```tsx
-'use dom';
+'use dom'
 
-import { IS_DOM } from 'expo/dom';
+import {IS_DOM} from 'expo/dom'
 
-export default function Component({ dom }: { dom?: import('expo/dom').DOMProps }) {
-  return <div>{IS_DOM ? 'Running in DOM component' : 'Running natively'}</div>;
+export default function Component({dom}: {dom?: import('expo/dom').DOMProps}) {
+	return <div>{IS_DOM ? 'Running in DOM component' : 'Running natively'}</div>
 }
 ```
 
@@ -323,13 +352,18 @@ export default function Component({ dom }: { dom?: import('expo/dom').DOMProps }
 Prefer requiring assets instead of using the public directory:
 
 ```tsx
-'use dom';
+'use dom'
 
 // Good - bundled with the component
-const logo = require('../assets/logo.png');
+const logo = require('../assets/logo.png')
 
-export default function Component({ dom }: { dom: import('expo/dom').DOMProps }) {
-  return <img src={logo} alt="Logo" />;
+export default function Component({dom}: {dom: import('expo/dom').DOMProps}) {
+	return (
+		<img
+			src={logo}
+			alt="Logo"
+		/>
+	)
 }
 ```
 
@@ -339,22 +373,29 @@ Import and use DOM components like regular components:
 
 ```tsx
 // app/index.tsx
-import { View, Text } from 'react-native';
-import WebChart from '@/components/web-chart';
-import CodeBlock from '@/components/code-block';
+import CodeBlock from '@/components/code-block'
+import WebChart from '@/components/web-chart'
+import {View, Text} from 'react-native'
 
 export default function HomeScreen() {
-  return (
-    <View style={{ flex: 1 }}>
-      <Text>Native content above</Text>
+	return (
+		<View style={{flex: 1}}>
+			<Text>Native content above</Text>
 
-      <WebChart data={[10, 20, 30, 40, 50]} dom={{ style: { height: 300 } }} />
+			<WebChart
+				data={[10, 20, 30, 40, 50]}
+				dom={{style: {height: 300}}}
+			/>
 
-      <CodeBlock code="const x = 1;" language="javascript" dom={{ scrollEnabled: true }} />
+			<CodeBlock
+				code="const x = 1;"
+				language="javascript"
+				dom={{scrollEnabled: true}}
+			/>
 
-      <Text>Native content below</Text>
-    </View>
-  );
+			<Text>Native content below</Text>
+		</View>
+	)
 }
 ```
 

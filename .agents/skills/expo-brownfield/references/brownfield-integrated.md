@@ -46,9 +46,9 @@ If the native projects cannot be moved, set up a monorepo with the Expo project 
 
 ```json
 {
-  "version": "1.0.0",
-  "private": true,
-  "workspaces": ["my-project"]
+	"version": "1.0.0",
+	"private": true,
+	"workspaces": ["my-project"]
 }
 ```
 
@@ -154,9 +154,9 @@ react {
 ### `gradle.properties`
 
 ```properties
-reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64
-newArchEnabled=true
-hermesEnabled=true
+reactNativeArchitectures = armeabi-v7a,arm64-v8a,x86,x86_64
+newArchEnabled = true
+hermesEnabled = true
 ```
 
 `newArchEnabled` and `hermesEnabled` must match across all sub-modules in your build.
@@ -330,8 +330,8 @@ Create `ios/Podfile.properties.json` alongside the Podfile (defaults are fine):
 
 ```json
 {
-  "expo.jsEngine": "hermes",
-  "EX_DEV_CLIENT_NETWORK_INSPECTOR": "true"
+	"expo.jsEngine": "hermes",
+	"EX_DEV_CLIENT_NETWORK_INSPECTOR": "true"
 }
 ```
 

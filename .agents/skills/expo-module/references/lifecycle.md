@@ -65,9 +65,9 @@ Register in `expo-module.config.json`:
 
 ```json
 {
-  "apple": {
-    "appDelegateSubscribers": ["MyAppDelegateSubscriber"]
-  }
+	"apple": {
+		"appDelegateSubscribers": ["MyAppDelegateSubscriber"]
+	}
 }
 ```
 

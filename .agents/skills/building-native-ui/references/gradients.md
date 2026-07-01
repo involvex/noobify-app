@@ -53,12 +53,12 @@ Stack multiple gradients by comma-separating them:
 
 ```tsx
 <View
-  style={{
-    experimental_backgroundImage: `
+	style={{
+		experimental_backgroundImage: `
     linear-gradient(to bottom, transparent 0%, black 100%),
     radial-gradient(circle at top right, rgba(255, 0, 0, 0.5) 0%, transparent 50%)
   `,
-  }}
+	}}
 />
 ```
 
@@ -67,16 +67,19 @@ Stack multiple gradients by comma-separating them:
 ### Overlay on Image
 
 ```tsx
-<View style={{ position: 'relative' }}>
-  <Image source={{ uri: '...' }} style={{ width: '100%', height: 200 }} />
-  <View
-    style={{
-      position: 'absolute',
-      inset: 0,
-      experimental_backgroundImage:
-        'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 50%)',
-    }}
-  />
+<View style={{position: 'relative'}}>
+	<Image
+		source={{uri: '...'}}
+		style={{width: '100%', height: 200}}
+	/>
+	<View
+		style={{
+			position: 'absolute',
+			inset: 0,
+			experimental_backgroundImage:
+				'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 50%)',
+		}}
+	/>
 </View>
 ```
 
@@ -84,11 +87,11 @@ Stack multiple gradients by comma-separating them:
 
 ```tsx
 <View
-  style={{
-    experimental_backgroundImage:
-      'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
-    backdropFilter: 'blur(10px)',
-  }}
+	style={{
+		experimental_backgroundImage:
+			'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+		backdropFilter: 'blur(10px)',
+	}}
 />
 ```
 
@@ -96,12 +99,14 @@ Stack multiple gradients by comma-separating them:
 
 ```tsx
 <Pressable
-  style={{
-    experimental_backgroundImage: 'linear-gradient(to bottom, #4CAF50 0%, #388E3C 100%)',
-    padding: 16,
-    borderRadius: 8,
-  }}>
-  <Text style={{ color: 'white', textAlign: 'center' }}>Submit</Text>
+	style={{
+		experimental_backgroundImage:
+			'linear-gradient(to bottom, #4CAF50 0%, #388E3C 100%)',
+		padding: 16,
+		borderRadius: 8,
+	}}
+>
+	<Text style={{color: 'white', textAlign: 'center'}}>Submit</Text>
 </Pressable>
 ```
 

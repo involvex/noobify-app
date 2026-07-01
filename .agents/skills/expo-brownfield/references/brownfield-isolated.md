@@ -55,25 +55,25 @@ To override the auto-generated names, expand the plugin entry in `app.json`:
 
 ```json
 {
-  "expo": {
-    "plugins": [
-      [
-        "expo-brownfield",
-        {
-          "ios": {
-            "targetName": "MyBrownfield",
-            "bundleIdentifier": "com.example.mybrownfield"
-          },
-          "android": {
-            "libraryName": "mybrownfield",
-            "group": "com.example",
-            "package": "com.example.mybrownfield",
-            "version": "1.0.0"
-          }
-        }
-      ]
-    ]
-  }
+	"expo": {
+		"plugins": [
+			[
+				"expo-brownfield",
+				{
+					"ios": {
+						"targetName": "MyBrownfield",
+						"bundleIdentifier": "com.example.mybrownfield"
+					},
+					"android": {
+						"libraryName": "mybrownfield",
+						"group": "com.example",
+						"package": "com.example.mybrownfield",
+						"version": "1.0.0"
+					}
+				}
+			]
+		]
+	}
 }
 ```
 
@@ -87,12 +87,12 @@ Enable `expo-build-properties`'s `ios.usePrecompiledModules` so `pod install` do
 
 ```json
 {
-  "expo": {
-    "plugins": [
-      ["expo-build-properties", { "ios": { "usePrecompiledModules": true } }],
-      "expo-brownfield"
-    ]
-  }
+	"expo": {
+		"plugins": [
+			["expo-build-properties", {"ios": {"usePrecompiledModules": true}}],
+			"expo-brownfield"
+		]
+	}
 }
 ```
 
@@ -116,40 +116,40 @@ The plugin's `publishing` option controls where the AAR is published. When unset
 
 ```json
 {
-  "expo": {
-    "plugins": [
-      [
-        "expo-brownfield",
-        {
-          "android": {
-            "libraryName": "mybrownfield",
-            "group": "com.example",
-            "version": "1.0.0",
-            "publishing": [
-              { "type": "localMaven" },
-              {
-                "type": "localDirectory",
-                "name": "build",
-                "path": "./out/maven"
-              },
-              {
-                "type": "remotePublic",
-                "name": "company",
-                "url": "https://maven.example.com/releases"
-              },
-              {
-                "type": "remotePrivate",
-                "name": "artifactory",
-                "url": { "variable": "ARTIFACTORY_URL" },
-                "username": { "variable": "ARTIFACTORY_USER" },
-                "password": { "variable": "ARTIFACTORY_TOKEN" }
-              }
-            ]
-          }
-        }
-      ]
-    ]
-  }
+	"expo": {
+		"plugins": [
+			[
+				"expo-brownfield",
+				{
+					"android": {
+						"libraryName": "mybrownfield",
+						"group": "com.example",
+						"version": "1.0.0",
+						"publishing": [
+							{"type": "localMaven"},
+							{
+								"type": "localDirectory",
+								"name": "build",
+								"path": "./out/maven"
+							},
+							{
+								"type": "remotePublic",
+								"name": "company",
+								"url": "https://maven.example.com/releases"
+							},
+							{
+								"type": "remotePrivate",
+								"name": "artifactory",
+								"url": {"variable": "ARTIFACTORY_URL"},
+								"username": {"variable": "ARTIFACTORY_USER"},
+								"password": {"variable": "ARTIFACTORY_TOKEN"}
+							}
+						]
+					}
+				}
+			]
+		]
+	}
 }
 ```
 
@@ -177,12 +177,12 @@ To force source builds on SDK 56+, add `expo-build-properties` to `app.json`:
 
 ```json
 {
-  "expo": {
-    "plugins": [
-      ["expo-build-properties", { "ios": { "buildReactNativeFromSource": true } }],
-      "expo-brownfield"
-    ]
-  }
+	"expo": {
+		"plugins": [
+			["expo-build-properties", {"ios": {"buildReactNativeFromSource": true}}],
+			"expo-brownfield"
+		]
+	}
 }
 ```
 

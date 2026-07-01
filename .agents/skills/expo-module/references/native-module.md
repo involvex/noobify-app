@@ -90,16 +90,16 @@ sendEvent("onChange", bundleOf("value" to newValue))
 **JS subscription:**
 
 ```typescript
-import { useEvent } from 'expo';
-import MyModule from './MyModule';
+import MyModule from './MyModule'
+import {useEvent} from 'expo'
 
 // Hook-based (recommended)
-const event = useEvent(MyModule, 'onChange');
+const event = useEvent(MyModule, 'onChange')
 
 // Manual subscription
-const subscription = MyModule.addListener('onChange', (event) => {
-  console.log(event.value);
-});
+const subscription = MyModule.addListener('onChange', event => {
+	console.log(event.value)
+})
 // Clean up: subscription.remove()
 ```
 
@@ -280,7 +280,7 @@ final class ImageRef: SharedRef<UIImage> {}
 ### JS Usage
 
 ```typescript
-const ctx = await ImageModule.create('/path/to/image.png');
-ctx.rotate(90);
-console.log(ctx.width);
+const ctx = await ImageModule.create('/path/to/image.png')
+ctx.rotate(90)
+console.log(ctx.width)
 ```

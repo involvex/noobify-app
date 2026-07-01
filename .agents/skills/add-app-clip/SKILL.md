@@ -15,12 +15,12 @@ The parent app's bundle ID becomes `com.<username>.<app-name>` and the Clip's is
 
 ```json
 {
-  "expo": {
-    "ios": {
-      "bundleIdentifier": "com.<username>.<app-name>",
-      "appleTeamId": "XX57RJ5UTD"
-    }
-  }
+	"expo": {
+		"ios": {
+			"bundleIdentifier": "com.<username>.<app-name>",
+			"appleTeamId": "XX57RJ5UTD"
+		}
+	}
 }
 ```
 
@@ -46,11 +46,14 @@ In `app.json`, add both `applinks:` (parent) and `appclips:` (Clip invocation) e
 
 ```json
 {
-  "expo": {
-    "ios": {
-      "associatedDomains": ["applinks:may20.expo.app", "appclips:may20.expo.app"]
-    }
-  }
+	"expo": {
+		"ios": {
+			"associatedDomains": [
+				"applinks:may20.expo.app",
+				"appclips:may20.expo.app"
+			]
+		}
+	}
 }
 ```
 
@@ -58,13 +61,13 @@ In `targets/clip/expo-target.config.js`, declare the Clip's entitlement:
 
 ```js
 /** @type {import('@bacons/apple-targets/app.plugin').ConfigFunction} */
-module.exports = (config) => ({
-  type: 'clip',
-  icon: 'https://github.com/expo.png',
-  entitlements: {
-    'com.apple.developer.associated-domains': ['appclips:may20.expo.app'],
-  },
-});
+module.exports = config => ({
+	type: 'clip',
+	icon: 'https://github.com/expo.png',
+	entitlements: {
+		'com.apple.developer.associated-domains': ['appclips:may20.expo.app'],
+	},
+})
 ```
 
 > If you skip this, `expo prebuild` will print: `Apple App Clip may require the associated domains entitlement but none were found`.
@@ -94,23 +97,23 @@ Paste the JSON `setup-safari` printed, but **add an `appclips` block** for the C
 
 ```json
 {
-  "applinks": {
-    "details": [
-      {
-        "appIDs": ["XX57RJ5UTD.com.bacon.may20"],
-        "components": [{ "/": "*", "comment": "Matches all routes" }]
-      }
-    ]
-  },
-  "appclips": {
-    "apps": ["XX57RJ5UTD.com.bacon.may20.clip"]
-  },
-  "activitycontinuation": {
-    "apps": ["XX57RJ5UTD.com.bacon.may20"]
-  },
-  "webcredentials": {
-    "apps": ["XX57RJ5UTD.com.bacon.may20"]
-  }
+	"applinks": {
+		"details": [
+			{
+				"appIDs": ["XX57RJ5UTD.com.bacon.may20"],
+				"components": [{"/": "*", "comment": "Matches all routes"}]
+			}
+		]
+	},
+	"appclips": {
+		"apps": ["XX57RJ5UTD.com.bacon.may20.clip"]
+	},
+	"activitycontinuation": {
+		"apps": ["XX57RJ5UTD.com.bacon.may20"]
+	},
+	"webcredentials": {
+		"apps": ["XX57RJ5UTD.com.bacon.may20"]
+	}
 }
 ```
 
@@ -133,21 +136,30 @@ bunx expo customize src/app/+html.tsx
 Add the meta tag to the `<head>`:
 
 ```tsx
-import { ScrollViewStyleReset } from 'expo-router/html';
+import {ScrollViewStyleReset} from 'expo-router/html'
 
-export default function Root({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="apple-itunes-app" content="app-id=6771566491" />
-        <ScrollViewStyleReset />
-      </head>
-      <body>{children}</body>
-    </html>
-  );
+export default function Root({children}: {children: React.ReactNode}) {
+	return (
+		<html lang="en">
+			<head>
+				<meta charSet="utf-8" />
+				<meta
+					httpEquiv="X-UA-Compatible"
+					content="IE=edge"
+				/>
+				<meta
+					name="viewport"
+					content="width=device-width, initial-scale=1"
+				/>
+				<meta
+					name="apple-itunes-app"
+					content="app-id=6771566491"
+				/>
+				<ScrollViewStyleReset />
+			</head>
+			<body>{children}</body>
+		</html>
+	)
 }
 ```
 
@@ -155,8 +167,9 @@ To make the website show the App Clip card instead of the install card, use:
 
 ```html
 <meta
-  name="apple-itunes-app"
-  content="app-id=6771566491, app-clip-bundle-id=com.bacon.may20.clip, app-clip-display=card" />
+	name="apple-itunes-app"
+	content="app-id=6771566491, app-clip-bundle-id=com.bacon.may20.clip, app-clip-display=card"
+/>
 ```
 
 ## 7. Deploy the website
@@ -223,24 +236,24 @@ Add `apple.appClip` to `store.config.json`. Up to 3 invocation URLs can launch t
 
 ```json
 {
-  "configVersion": 0,
-  "apple": {
-    "appClip": {
-      "defaultExperience": {
-        "action": "PLAY",
-        "releaseWithAppStoreVersion": true,
-        "reviewDetail": {
-          "invocationUrls": ["https://may20.expo.app/", null, null]
-        },
-        "info": {
-          "en-US": {
-            "subtitle": "Instantly native with Expo",
-            "headerImage": "store/apple/app-clip/en-US/asc-app-clip.png"
-          }
-        }
-      }
-    }
-  }
+	"configVersion": 0,
+	"apple": {
+		"appClip": {
+			"defaultExperience": {
+				"action": "PLAY",
+				"releaseWithAppStoreVersion": true,
+				"reviewDetail": {
+					"invocationUrls": ["https://may20.expo.app/", null, null]
+				},
+				"info": {
+					"en-US": {
+						"subtitle": "Instantly native with Expo",
+						"headerImage": "store/apple/app-clip/en-US/asc-app-clip.png"
+					}
+				}
+			}
+		}
+	}
 }
 ```
 

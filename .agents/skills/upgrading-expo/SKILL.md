@@ -101,7 +101,7 @@ Check if package.json has excluded packages:
 
 ```json
 {
-  "expo": { "install": { "exclude": ["react-native-reanimated"] } }
+	"expo": {"install": {"exclude": ["react-native-reanimated"]}}
 }
 ```
 

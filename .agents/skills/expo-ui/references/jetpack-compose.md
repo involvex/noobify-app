@@ -18,17 +18,19 @@ src/app/product-list.tsx                 ← regular Expo Router route, imports 
 `src/app/product-list.tsx`:
 
 ```tsx
-import ProductList from '../components/ProductList';
-export default ProductList;
+import ProductList from '../components/ProductList'
+export default ProductList
 ```
 
 Alternatively, keep everything in one regular route file and branch on `Platform.OS`:
 
 ```tsx
 // src/app/product-list.tsx
-import { Platform } from 'react-native';
+import {Platform} from 'react-native'
 const ComposeList =
-  Platform.OS === 'android' ? require('../components/ProductList.android').default : null;
+	Platform.OS === 'android'
+		? require('../components/ProductList.android').default
+		: null
 ```
 
 ## Instructions
@@ -47,16 +49,19 @@ const ComposeList =
 - Every Jetpack Compose tree must be wrapped in `Host`. Use `<Host matchContents>` for intrinsic sizing, or `<Host style={{ flex: 1 }}>` when you need explicit size (e.g. as a parent of `LazyColumn`). Example:
 
 ```jsx
-import { Host } from '@expo/ui'; // Host always from universal root
-import { Column, Button, Text } from '@expo/ui/jetpack-compose';
-import { fillMaxWidth, paddingAll } from '@expo/ui/jetpack-compose/modifiers';
+import {fillMaxWidth, paddingAll} from '@expo/ui/jetpack-compose/modifiers'
+import {Column, Button, Text} from '@expo/ui/jetpack-compose'
+import {Host} from '@expo/ui' // Host always from universal root
 
-<Host matchContents>
-  <Column verticalArrangement={{ spacedBy: 8 }} modifiers={[fillMaxWidth(), paddingAll(16)]}>
-    <Text style={{ typography: 'titleLarge' }}>Hello</Text>
-    <Button onPress={() => alert('Pressed!')}>Press me</Button>
-  </Column>
-</Host>;
+;<Host matchContents>
+	<Column
+		verticalArrangement={{spacedBy: 8}}
+		modifiers={[fillMaxWidth(), paddingAll(16)]}
+	>
+		<Text style={{typography: 'titleLarge'}}>Hello</Text>
+		<Button onPress={() => alert('Pressed!')}>Press me</Button>
+	</Column>
+</Host>
 ```
 
 - `RNHostView` embeds React Native components inside a Jetpack Compose tree (the same concept as in `@expo/ui/swift-ui`) — wrap any RN child in `<RNHostView>`.

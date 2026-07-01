@@ -85,34 +85,34 @@ Standard `eas.json` for production deployments:
 
 ```json
 {
-  "cli": {
-    "version": ">= 16.0.1",
-    "appVersionSource": "remote"
-  },
-  "build": {
-    "production": {
-      "autoIncrement": true,
-      "ios": {
-        "resourceClass": "m-medium"
-      }
-    },
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
-    }
-  },
-  "submit": {
-    "production": {
-      "ios": {
-        "appleId": "your@email.com",
-        "ascAppId": "1234567890"
-      },
-      "android": {
-        "serviceAccountKeyPath": "./google-service-account.json",
-        "track": "internal"
-      }
-    }
-  }
+	"cli": {
+		"version": ">= 16.0.1",
+		"appVersionSource": "remote"
+	},
+	"build": {
+		"production": {
+			"autoIncrement": true,
+			"ios": {
+				"resourceClass": "m-medium"
+			}
+		},
+		"development": {
+			"developmentClient": true,
+			"distribution": "internal"
+		}
+	},
+	"submit": {
+		"production": {
+			"ios": {
+				"appleId": "your@email.com",
+				"ascAppId": "1234567890"
+			},
+			"android": {
+				"serviceAccountKeyPath": "./google-service-account.json",
+				"track": "internal"
+			}
+		}
+	}
 }
 ```
 

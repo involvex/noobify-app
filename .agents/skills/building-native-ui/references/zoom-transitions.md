@@ -3,7 +3,7 @@
 Fluid zoom transitions for navigating between screens. iOS 18+, Expo SDK 55+, Stack navigator only.
 
 ```tsx
-import { Link } from 'expo-router';
+import {Link} from 'expo-router'
 ```
 
 ## Basic Zoom
@@ -11,15 +11,18 @@ import { Link } from 'expo-router';
 Use `withAppleZoom` on `Link.Trigger` to zoom the entire trigger element into the destination screen:
 
 ```tsx
-<Link href="/photo" asChild>
-  <Link.Trigger withAppleZoom>
-    <Pressable>
-      <Image
-        source={{ uri: 'https://example.com/thumb.jpg' }}
-        style={{ width: 120, height: 120, borderRadius: 12 }}
-      />
-    </Pressable>
-  </Link.Trigger>
+<Link
+	href="/photo"
+	asChild
+>
+	<Link.Trigger withAppleZoom>
+		<Pressable>
+			<Image
+				source={{uri: 'https://example.com/thumb.jpg'}}
+				style={{width: 120, height: 120, borderRadius: 12}}
+			/>
+		</Pressable>
+	</Link.Trigger>
 </Link>
 ```
 
@@ -28,18 +31,21 @@ Use `withAppleZoom` on `Link.Trigger` to zoom the entire trigger element into th
 Wrap only the element that should animate. Siblings outside `Link.AppleZoom` are not part of the transition:
 
 ```tsx
-<Link href="/photo" asChild>
-  <Link.Trigger>
-    <Pressable style={{ alignItems: 'center' }}>
-      <Link.AppleZoom>
-        <Image
-          source={{ uri: 'https://example.com/thumb.jpg' }}
-          style={{ width: 200, aspectRatio: 4 / 3 }}
-        />
-      </Link.AppleZoom>
-      <Text>Caption text (not zoomed)</Text>
-    </Pressable>
-  </Link.Trigger>
+<Link
+	href="/photo"
+	asChild
+>
+	<Link.Trigger>
+		<Pressable style={{alignItems: 'center'}}>
+			<Link.AppleZoom>
+				<Image
+					source={{uri: 'https://example.com/thumb.jpg'}}
+					style={{width: 200, aspectRatio: 4 / 3}}
+				/>
+			</Link.AppleZoom>
+			<Text>Caption text (not zoomed)</Text>
+		</Pressable>
+	</Link.Trigger>
 </Link>
 ```
 
@@ -51,20 +57,20 @@ Use `Link.AppleZoomTarget` on the destination screen to align the zoom animation
 
 ```tsx
 // Destination screen (e.g., app/photo.tsx)
-import { Link } from 'expo-router';
+import {Link} from 'expo-router'
 
 export default function PhotoScreen() {
-  return (
-    <View style={{ flex: 1 }}>
-      <Link.AppleZoomTarget>
-        <Image
-          source={{ uri: 'https://example.com/full.jpg' }}
-          style={{ width: '100%', aspectRatio: 4 / 3 }}
-        />
-      </Link.AppleZoomTarget>
-      <Text>Photo details below</Text>
-    </View>
-  );
+	return (
+		<View style={{flex: 1}}>
+			<Link.AppleZoomTarget>
+				<Image
+					source={{uri: 'https://example.com/full.jpg'}}
+					style={{width: '100%', aspectRatio: 4 / 3}}
+				/>
+			</Link.AppleZoomTarget>
+			<Text>Photo details below</Text>
+		</View>
+	)
 }
 ```
 
@@ -75,8 +81,8 @@ Without a target, the zoom animates to fill the entire destination screen.
 For manual control over where the zoom lands on the destination, use `alignmentRect` instead of `Link.AppleZoomTarget`:
 
 ```tsx
-<Link.AppleZoom alignmentRect={{ x: 0, y: 0, width: 200, height: 300 }}>
-  <Image source={{ uri: 'https://example.com/thumb.jpg' }} />
+<Link.AppleZoom alignmentRect={{x: 0, y: 0, width: 200, height: 300}}>
+	<Image source={{uri: 'https://example.com/thumb.jpg'}} />
 </Link.AppleZoom>
 ```
 
@@ -89,11 +95,11 @@ Zoom screens support interactive dismissal gestures by default (pinch, swipe dow
 ### Disable all dismissal gestures
 
 ```tsx
-import { usePreventZoomTransitionDismissal } from 'expo-router';
+import {usePreventZoomTransitionDismissal} from 'expo-router'
 
 export default function PhotoScreen() {
-  usePreventZoomTransitionDismissal();
-  return <Image source={{ uri: 'https://example.com/full.jpg' }} />;
+	usePreventZoomTransitionDismissal()
+	return <Image source={{uri: 'https://example.com/full.jpg'}} />
 }
 ```
 
@@ -103,13 +109,13 @@ Use `unstable_dismissalBoundsRect` to prevent conflicts with scrollable content:
 
 ```tsx
 usePreventZoomTransitionDismissal({
-  unstable_dismissalBoundsRect: {
-    minX: 0,
-    minY: 0,
-    maxX: 300,
-    maxY: 300,
-  },
-});
+	unstable_dismissalBoundsRect: {
+		minX: 0,
+		minY: 0,
+		maxX: 300,
+		maxY: 300,
+	},
+})
 ```
 
 This is useful when the destination contains a zoomable scroll view — the system gives that scroll view precedence over the dismiss gesture.
@@ -119,16 +125,19 @@ This is useful when the destination contains a zoomable scroll view — the syst
 Zoom transitions work alongside long-press previews:
 
 ```tsx
-<Link href="/photo" asChild>
-  <Link.Trigger withAppleZoom>
-    <Pressable>
-      <Image
-        source={{ uri: 'https://example.com/thumb.jpg' }}
-        style={{ width: 120, height: 120 }}
-      />
-    </Pressable>
-  </Link.Trigger>
-  <Link.Preview />
+<Link
+	href="/photo"
+	asChild
+>
+	<Link.Trigger withAppleZoom>
+		<Pressable>
+			<Image
+				source={{uri: 'https://example.com/thumb.jpg'}}
+				style={{width: 120, height: 120}}
+			/>
+		</Pressable>
+	</Link.Trigger>
+	<Link.Preview />
 </Link>
 ```
 

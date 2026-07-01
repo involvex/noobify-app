@@ -73,15 +73,15 @@ On first launch, the app will automatically download the ~400MB Qwen2.5-0.5B-Ins
 
 ```json
 {
-  "plugins": [
-    [
-      "llama.rn",
-      {
-        "forceCxx20": true,
-        "enableOpenCLAndHexagon": true
-      }
-    ]
-  ]
+	"plugins": [
+		[
+			"llama.rn",
+			{
+				"forceCxx20": true,
+				"enableOpenCLAndHexagon": true
+			}
+		]
+	]
 }
 ```
 

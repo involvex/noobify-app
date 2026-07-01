@@ -13,14 +13,14 @@ Example:
 
 ```json
 {
-  "platforms": ["android", "apple", "web"],
-  "apple": {
-    "modules": ["MyModule"],
-    "appDelegateSubscribers": ["MyAppDelegateSubscriber"]
-  },
-  "android": {
-    "modules": ["expo.modules.mymodule.MyModule"]
-  }
+	"platforms": ["android", "apple", "web"],
+	"apple": {
+		"modules": ["MyModule"],
+		"appDelegateSubscribers": ["MyAppDelegateSubscriber"]
+	},
+	"android": {
+		"modules": ["expo.modules.mymodule.MyModule"]
+	}
 }
 ```
 

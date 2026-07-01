@@ -85,20 +85,20 @@ eas observe:metrics-summary --metric tti --days 14 --platform ios
 
 ```json
 {
-  "versions": [
-    {
-      "appVersion": "1.2.0",
-      "platform": "IOS",
-      "buildNumbers": ["42"],
-      "updateIds": ["abc-def-...", "..."],
-      "metrics": {
-        "expo.app_startup.tti": { "median": 0.45, "p90": 0.9, "...": "..." }
-      }
-    }
-  ],
-  "totalEventCounts": {
-    "expo.app_startup.tti": { "IOS": 1234, "ANDROID": 890 }
-  }
+	"versions": [
+		{
+			"appVersion": "1.2.0",
+			"platform": "IOS",
+			"buildNumbers": ["42"],
+			"updateIds": ["abc-def-...", "..."],
+			"metrics": {
+				"expo.app_startup.tti": {"median": 0.45, "p90": 0.9, "...": "..."}
+			}
+		}
+	],
+	"totalEventCounts": {
+		"expo.app_startup.tti": {"IOS": 1234, "ANDROID": 890}
+	}
 }
 ```
 
@@ -183,20 +183,24 @@ eas observe:routes --after <cursor>
 
 ```json
 {
-  "routes": [
-    {
-      "routeName": "(tabs)/home",
-      "platform": "IOS",
-      "metrics": {
-        "expo.navigation.cold_ttr": { "median": 0.32, "p90": 0.85, "count": 1240 },
-        "expo.navigation.tti": { "median": 0.55, "p90": 1.1, "count": 1240 }
-      }
-    }
-  ],
-  "pageInfoByPlatform": {
-    "IOS": { "hasNextPage": true, "endCursor": "..." },
-    "ANDROID": { "hasNextPage": false, "endCursor": null }
-  }
+	"routes": [
+		{
+			"routeName": "(tabs)/home",
+			"platform": "IOS",
+			"metrics": {
+				"expo.navigation.cold_ttr": {
+					"median": 0.32,
+					"p90": 0.85,
+					"count": 1240
+				},
+				"expo.navigation.tti": {"median": 0.55, "p90": 1.1, "count": 1240}
+			}
+		}
+	],
+	"pageInfoByPlatform": {
+		"IOS": {"hasNextPage": true, "endCursor": "..."},
+		"ANDROID": {"hasNextPage": false, "endCursor": null}
+	}
 }
 ```
 
@@ -250,28 +254,30 @@ eas observe:events login_failed --after <cursor>
 
 ```json
 {
-  "events": [
-    {
-      "id": "...",
-      "eventName": "login_failed",
-      "timestamp": "2026-...",
-      "sessionId": "...",
-      "severityNumber": 13,
-      "severityText": "WARN",
-      "properties": [{ "key": "reason", "value": "bad_password", "type": "string" }],
-      "appVersion": "1.2.0",
-      "appBuildNumber": "42",
-      "appUpdateId": null,
-      "appEasBuildId": null,
-      "deviceModel": "...",
-      "deviceOs": "iOS",
-      "deviceOsVersion": "17.4",
-      "countryCode": "US",
-      "environment": "production",
-      "easClientId": "..."
-    }
-  ],
-  "pageInfo": { "hasNextPage": true, "endCursor": "..." }
+	"events": [
+		{
+			"id": "...",
+			"eventName": "login_failed",
+			"timestamp": "2026-...",
+			"sessionId": "...",
+			"severityNumber": 13,
+			"severityText": "WARN",
+			"properties": [
+				{"key": "reason", "value": "bad_password", "type": "string"}
+			],
+			"appVersion": "1.2.0",
+			"appBuildNumber": "42",
+			"appUpdateId": null,
+			"appEasBuildId": null,
+			"deviceModel": "...",
+			"deviceOs": "iOS",
+			"deviceOsVersion": "17.4",
+			"countryCode": "US",
+			"environment": "production",
+			"easClientId": "..."
+		}
+	],
+	"pageInfo": {"hasNextPage": true, "endCursor": "..."}
 }
 ```
 

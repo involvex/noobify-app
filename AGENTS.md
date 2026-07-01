@@ -153,8 +153,8 @@ The project uses TypeScript path aliases for cleaner imports:
 Example usage:
 
 ```typescript
-import { haloColors } from '@/constants/haloTheme';
-import { useLocalLLM } from '@/hooks/useLocalLLM';
+import {haloColors} from '@/constants/haloTheme'
+import {useLocalLLM} from '@/hooks/useLocalLLM'
 ```
 
 ### Styling
@@ -220,12 +220,12 @@ Always use the exported theme tokens from `@/constants/haloTheme`:
 Example:
 
 ```typescript
-import { useState, useCallback } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Button, Card } from 'react-native-paper';
+import {View, StyleSheet, ScrollView} from 'react-native'
+import {Text, Button, Card} from 'react-native-paper'
+import {useState, useCallback} from 'react'
 
-import { haloColors } from '@/constants/haloTheme';
-import { useLocalLLM } from '@/hooks/useLocalLLM';
+import {haloColors} from '@/constants/haloTheme'
+import {useLocalLLM} from '@/hooks/useLocalLLM'
 ```
 
 ### State Management

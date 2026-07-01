@@ -135,44 +135,44 @@ Use the `Color` API from `expo-router` for native semantic colors. It is a type-
 
 ```tsx
 // theme/colors.ts
-import { Platform } from 'react-native';
-import { Color } from 'expo-router';
+import {Platform} from 'react-native'
+import {Color} from 'expo-router'
 
 export const colors = {
-  label: Platform.select({
-    ios: Color.ios.label,
-    android: Color.android.dynamic.onSurface,
-    default: '#000000',
-  })!,
-  secondaryLabel: Platform.select({
-    ios: Color.ios.secondaryLabel,
-    android: Color.android.dynamic.onSurfaceVariant,
-    default: '#3c3c43',
-  })!,
-  separator: Platform.select({
-    ios: Color.ios.separator,
-    android: Color.android.dynamic.outlineVariant,
-    default: '#c6c6c8',
-  })!,
-  systemBackground: Platform.select({
-    ios: Color.ios.systemBackground,
-    android: Color.android.dynamic.surface,
-    default: '#ffffff',
-  })!,
-  systemBlue: Platform.select({
-    ios: Color.ios.systemBlue,
-    android: Color.android.dynamic.primary,
-    default: '#007aff',
-  })!,
-};
+	label: Platform.select({
+		ios: Color.ios.label,
+		android: Color.android.dynamic.onSurface,
+		default: '#000000',
+	})!,
+	secondaryLabel: Platform.select({
+		ios: Color.ios.secondaryLabel,
+		android: Color.android.dynamic.onSurfaceVariant,
+		default: '#3c3c43',
+	})!,
+	separator: Platform.select({
+		ios: Color.ios.separator,
+		android: Color.android.dynamic.outlineVariant,
+		default: '#c6c6c8',
+	})!,
+	systemBackground: Platform.select({
+		ios: Color.ios.systemBackground,
+		android: Color.android.dynamic.surface,
+		default: '#ffffff',
+	})!,
+	systemBlue: Platform.select({
+		ios: Color.ios.systemBlue,
+		android: Color.android.dynamic.primary,
+		default: '#007aff',
+	})!,
+}
 ```
 
 ```tsx
-import { colors } from '@/theme/colors';
+import {colors} from '@/theme/colors'
 
-<View style={{ backgroundColor: colors.systemBackground }}>
-  <Text style={{ color: colors.label }}>Title</Text>
-</View>;
+;<View style={{backgroundColor: colors.systemBackground}}>
+	<Text style={{color: colors.label}}>Title</Text>
+</View>
 ```
 
 - iOS re-resolves these colors automatically when the system theme changes. On Android, call `useColorScheme()` inside any component that renders them so it re-renders when the theme flips (required when React Compiler memoizes the component).
@@ -189,7 +189,7 @@ import { colors } from '@/theme/colors';
 Use CSS `boxShadow` style prop. NEVER use legacy React Native shadow or elevation styles.
 
 ```tsx
-<View style={{ boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)' }} />
+<View style={{boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'}} />
 ```
 
 'inset' shadows are supported.
@@ -224,7 +224,7 @@ Whenever possible, include a `<Link.Preview>` to follow iOS conventions. Add con
 Set the page title in Stack.Screen options:
 
 ```tsx
-<Stack.Screen options={{ title: 'Home' }} />
+<Stack.Screen options={{title: 'Home'}} />
 ```
 
 ## Context Menus
@@ -232,23 +232,47 @@ Set the page title in Stack.Screen options:
 Add long press context menus to Link components:
 
 ```tsx
-import { Link } from 'expo-router';
+import {Link} from 'expo-router'
 
-<Link href="/settings" asChild>
-  <Link.Trigger>
-    <Pressable>
-      <Card />
-    </Pressable>
-  </Link.Trigger>
-  <Link.Menu>
-    <Link.MenuAction title="Share" icon="square.and.arrow.up" onPress={handleSharePress} />
-    <Link.MenuAction title="Block" icon="nosign" destructive onPress={handleBlockPress} />
-    <Link.Menu title="More" icon="ellipsis">
-      <Link.MenuAction title="Copy" icon="doc.on.doc" onPress={() => {}} />
-      <Link.MenuAction title="Delete" icon="trash" destructive onPress={() => {}} />
-    </Link.Menu>
-  </Link.Menu>
-</Link>;
+;<Link
+	href="/settings"
+	asChild
+>
+	<Link.Trigger>
+		<Pressable>
+			<Card />
+		</Pressable>
+	</Link.Trigger>
+	<Link.Menu>
+		<Link.MenuAction
+			title="Share"
+			icon="square.and.arrow.up"
+			onPress={handleSharePress}
+		/>
+		<Link.MenuAction
+			title="Block"
+			icon="nosign"
+			destructive
+			onPress={handleBlockPress}
+		/>
+		<Link.Menu
+			title="More"
+			icon="ellipsis"
+		>
+			<Link.MenuAction
+				title="Copy"
+				icon="doc.on.doc"
+				onPress={() => {}}
+			/>
+			<Link.MenuAction
+				title="Delete"
+				icon="trash"
+				destructive
+				onPress={() => {}}
+			/>
+		</Link.Menu>
+	</Link.Menu>
+</Link>
 ```
 
 ## Link Previews
@@ -257,12 +281,12 @@ Use link previews frequently to enhance navigation:
 
 ```tsx
 <Link href="/settings">
-  <Link.Trigger>
-    <Pressable>
-      <Card />
-    </Pressable>
-  </Link.Trigger>
-  <Link.Preview />
+	<Link.Trigger>
+		<Pressable>
+			<Card />
+		</Pressable>
+	</Link.Trigger>
+	<Link.Preview />
 </Link>
 ```
 
@@ -273,7 +297,10 @@ Link preview can be used with context menus.
 Present a screen as a modal:
 
 ```tsx
-<Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+<Stack.Screen
+	name="modal"
+	options={{presentation: 'modal'}}
+/>
 ```
 
 Prefer this to building a custom modal component.
@@ -284,13 +311,13 @@ Present a screen as a dynamic form sheet:
 
 ```tsx
 <Stack.Screen
-  name="sheet"
-  options={{
-    presentation: 'formSheet',
-    sheetGrabberVisible: true,
-    sheetAllowedDetents: [0.5, 1.0],
-    contentStyle: { backgroundColor: 'transparent' },
-  }}
+	name="sheet"
+	options={{
+		presentation: 'formSheet',
+		sheetGrabberVisible: true,
+		sheetAllowedDetents: [0.5, 1.0],
+		contentStyle: {backgroundColor: 'transparent'},
+	}}
 />
 ```
 
@@ -311,23 +338,33 @@ app/
 
 ```tsx
 // app/_layout.tsx
-import { NativeTabs } from 'expo-router/unstable-native-tabs';
-import { ThemeProvider, DarkTheme, DefaultTheme } from 'expo-router/react-navigation';
-import { useColorScheme } from 'react-native';
+import {
+	ThemeProvider,
+	DarkTheme,
+	DefaultTheme,
+} from 'expo-router/react-navigation'
+import {NativeTabs} from 'expo-router/unstable-native-tabs'
+import {useColorScheme} from 'react-native'
 
 export default function Layout() {
-  const colorScheme = useColorScheme();
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <NativeTabs>
-        <NativeTabs.Trigger name="(index)">
-          <NativeTabs.Trigger.Icon sf="list.dash" md="list" />
-          <NativeTabs.Trigger.Label>Items</NativeTabs.Trigger.Label>
-        </NativeTabs.Trigger>
-        <NativeTabs.Trigger name="(search)" role="search" />
-      </NativeTabs>
-    </ThemeProvider>
-  );
+	const colorScheme = useColorScheme()
+	return (
+		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+			<NativeTabs>
+				<NativeTabs.Trigger name="(index)">
+					<NativeTabs.Trigger.Icon
+						sf="list.dash"
+						md="list"
+					/>
+					<NativeTabs.Trigger.Label>Items</NativeTabs.Trigger.Label>
+				</NativeTabs.Trigger>
+				<NativeTabs.Trigger
+					name="(search)"
+					role="search"
+				/>
+			</NativeTabs>
+		</ThemeProvider>
+	)
 }
 ```
 
@@ -335,28 +372,35 @@ Create a shared group route so both tabs can push common screens:
 
 ```tsx
 // app/(index,search)/_layout.tsx
-import { Stack } from 'expo-router/stack';
-import { colors } from '@/theme/colors';
+import {Stack} from 'expo-router/stack'
+import {colors} from '@/theme/colors'
 
-export default function Layout({ segment }) {
-  const screen = segment.match(/\((.*)\)/)?.[1]!;
-  const titles: Record<string, string> = { index: 'Items', search: 'Search' };
+export default function Layout({segment}) {
+	const screen = segment.match(/\((.*)\)/)?.[1]!
+	const titles: Record<string, string> = {index: 'Items', search: 'Search'}
 
-  return (
-    <Stack
-      screenOptions={{
-        headerTransparent: true,
-        headerShadowVisible: false,
-        headerLargeTitleShadowVisible: false,
-        headerLargeStyle: { backgroundColor: 'transparent' },
-        headerTitleStyle: { color: colors.label },
-        headerLargeTitle: true,
-        headerBlurEffect: 'none',
-        headerBackButtonDisplayMode: 'minimal',
-      }}>
-      <Stack.Screen name={screen} options={{ title: titles[screen] }} />
-      <Stack.Screen name="i/[id]" options={{ headerLargeTitle: false }} />
-    </Stack>
-  );
+	return (
+		<Stack
+			screenOptions={{
+				headerTransparent: true,
+				headerShadowVisible: false,
+				headerLargeTitleShadowVisible: false,
+				headerLargeStyle: {backgroundColor: 'transparent'},
+				headerTitleStyle: {color: colors.label},
+				headerLargeTitle: true,
+				headerBlurEffect: 'none',
+				headerBackButtonDisplayMode: 'minimal',
+			}}
+		>
+			<Stack.Screen
+				name={screen}
+				options={{title: titles[screen]}}
+			/>
+			<Stack.Screen
+				name="i/[id]"
+				options={{headerLargeTitle: false}}
+			/>
+		</Stack>
+	)
 }
 ```

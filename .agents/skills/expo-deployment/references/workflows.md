@@ -59,7 +59,7 @@ jobs:
   publish:
     type: update
     params:
-      branch: 'pr-${{ github.event.pull_request.number }}'
+      branch: pr-${{ github.event.pull_request.number }}
       message: 'PR #${{ github.event.pull_request.number }}'
 ```
 
@@ -72,7 +72,7 @@ name: Release
 
 on:
   push:
-    tags: ['v*']
+    tags: [v*]
 
 jobs:
   build-ios:

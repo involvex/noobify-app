@@ -49,15 +49,15 @@ Configure in `eas.json`:
 
 ```json
 {
-  "submit": {
-    "production": {
-      "ios": {
-        "ascApiKeyPath": "./AuthKey_XXXXX.p8",
-        "ascApiKeyIssuerId": "xxxxx-xxxx-xxxx-xxxx-xxxxx",
-        "ascApiKeyId": "XXXXXXXXXX"
-      }
-    }
-  }
+	"submit": {
+		"production": {
+			"ios": {
+				"ascApiKeyPath": "./AuthKey_XXXXX.p8",
+				"ascApiKeyIssuerId": "xxxxx-xxxx-xxxx-xxxx-xxxxx",
+				"ascApiKeyId": "XXXXXXXXXX"
+			}
+		}
+	}
 }
 ```
 
@@ -124,27 +124,27 @@ Before submitting, complete in App Store Connect:
 
 ```json
 {
-  "cli": {
-    "version": ">= 16.0.1",
-    "appVersionSource": "remote"
-  },
-  "build": {
-    "production": {
-      "ios": {
-        "resourceClass": "m-medium",
-        "autoIncrement": true
-      }
-    }
-  },
-  "submit": {
-    "production": {
-      "ios": {
-        "appleId": "your@email.com",
-        "ascAppId": "1234567890",
-        "appleTeamId": "XXXXXXXXXX"
-      }
-    }
-  }
+	"cli": {
+		"version": ">= 16.0.1",
+		"appVersionSource": "remote"
+	},
+	"build": {
+		"production": {
+			"ios": {
+				"resourceClass": "m-medium",
+				"autoIncrement": true
+			}
+		}
+	},
+	"submit": {
+		"production": {
+			"ios": {
+				"appleId": "your@email.com",
+				"ascAppId": "1234567890",
+				"appleTeamId": "XXXXXXXXXX"
+			}
+		}
+	}
 }
 ```
 
@@ -207,12 +207,12 @@ Configure in `app.json`:
 
 ```json
 {
-  "expo": {
-    "version": "1.2.3",
-    "ios": {
-      "buildNumber": "1"
-    }
-  }
+	"expo": {
+		"version": "1.2.3",
+		"ios": {
+			"buildNumber": "1"
+		}
+	}
 }
 ```
 
@@ -226,11 +226,11 @@ Release immediately when approved:
 
 ```json
 {
-  "apple": {
-    "release": {
-      "automaticRelease": true
-    }
-  }
+	"apple": {
+		"release": {
+			"automaticRelease": true
+		}
+	}
 }
 ```
 
@@ -238,11 +238,11 @@ Release immediately when approved:
 
 ```json
 {
-  "apple": {
-    "release": {
-      "automaticRelease": "2025-03-01T10:00:00Z"
-    }
-  }
+	"apple": {
+		"release": {
+			"automaticRelease": "2025-03-01T10:00:00Z"
+		}
+	}
 }
 ```
 
@@ -252,11 +252,11 @@ Gradual rollout over 7 days:
 
 ```json
 {
-  "apple": {
-    "release": {
-      "phasedRelease": true
-    }
-  }
+	"apple": {
+		"release": {
+			"phasedRelease": true
+		}
+	}
 }
 ```
 
@@ -316,13 +316,13 @@ Add export compliance to `app.json`:
 
 ```json
 {
-  "expo": {
-    "ios": {
-      "config": {
-        "usesNonExemptEncryption": false
-      }
-    }
-  }
+	"expo": {
+		"ios": {
+			"config": {
+				"usesNonExemptEncryption": false
+			}
+		}
+	}
 }
 ```
 
@@ -346,7 +346,7 @@ name: Release to App Store
 
 on:
   push:
-    tags: ['v*']
+    tags: [v*]
 
 jobs:
   build:

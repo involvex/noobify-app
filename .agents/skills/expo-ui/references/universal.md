@@ -9,14 +9,14 @@ Universal components are a single-API layer over the platform-native UI toolkits
 Import everything, including `Host`, from the package root (`@expo/ui`). Every tree must be wrapped in `Host`.
 
 ```tsx
-import { Host, Column, Button, Text } from '@expo/ui';
+import {Host, Column, Button, Text} from '@expo/ui'
 
-<Host matchContents>
-  <Column>
-    <Text>Hello</Text>
-    <Button onPress={() => alert('Pressed!')}>Press me</Button>
-  </Column>
-</Host>;
+;<Host matchContents>
+	<Column>
+		<Text>Hello</Text>
+		<Button onPress={() => alert('Pressed!')}>Press me</Button>
+	</Column>
+</Host>
 ```
 
 ## Components
@@ -39,26 +39,30 @@ import { Host, Column, Button, Text } from '@expo/ui';
 Requires `react-native-worklets`. Without it the worklet directive has no effect and flickering remains.
 
 ```tsx
-import { Host, TextInput, useNativeState } from '@expo/ui';
-import { useCallback } from 'react';
+import {Host, TextInput, useNativeState} from '@expo/ui'
+import {useCallback} from 'react'
 
 export default function MyInput() {
-  const text = useNativeState('');
+	const text = useNativeState('')
 
-  const handleChangeText = useCallback(
-    (value: string) => {
-      'worklet';
-      // transform synchronously on the UI thread — no React re-render
-      text.value = value === 'Hello' ? 'World' : value;
-    },
-    [text],
-  );
+	const handleChangeText = useCallback(
+		(value: string) => {
+			'worklet'
+			// transform synchronously on the UI thread — no React re-render
+			text.value = value === 'Hello' ? 'World' : value
+		},
+		[text],
+	)
 
-  return (
-    <Host matchContents>
-      <TextInput value={text} onChangeText={handleChangeText} placeholder="Type here" />
-    </Host>
-  );
+	return (
+		<Host matchContents>
+			<TextInput
+				value={text}
+				onChangeText={handleChangeText}
+				placeholder="Type here"
+			/>
+		</Host>
+	)
 }
 ```
 

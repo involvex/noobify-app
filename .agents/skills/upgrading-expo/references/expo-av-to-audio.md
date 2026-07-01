@@ -4,16 +4,16 @@
 
 ```tsx
 // Before
-import { Audio } from 'expo-av';
+import {Audio} from 'expo-av'
 
 // After
 import {
-  useAudioPlayer,
-  useAudioRecorder,
-  RecordingPresets,
-  AudioModule,
-  setAudioModeAsync,
-} from 'expo-audio';
+	useAudioPlayer,
+	useAudioRecorder,
+	RecordingPresets,
+	AudioModule,
+	setAudioModeAsync,
+} from 'expo-audio'
 ```
 
 ## Audio Playback
@@ -21,30 +21,30 @@ import {
 ### Before (expo-av)
 
 ```tsx
-const [sound, setSound] = useState<Audio.Sound>();
+const [sound, setSound] = useState<Audio.Sound>()
 
 async function playSound() {
-  const { sound } = await Audio.Sound.createAsync(require('./audio.mp3'));
-  setSound(sound);
-  await sound.playAsync();
+	const {sound} = await Audio.Sound.createAsync(require('./audio.mp3'))
+	setSound(sound)
+	await sound.playAsync()
 }
 
 useEffect(() => {
-  return sound
-    ? () => {
-        sound.unloadAsync();
-      }
-    : undefined;
-}, [sound]);
+	return sound
+		? () => {
+				sound.unloadAsync()
+			}
+		: undefined
+}, [sound])
 ```
 
 ### After (expo-audio)
 
 ```tsx
-const player = useAudioPlayer(require('./audio.mp3'));
+const player = useAudioPlayer(require('./audio.mp3'))
 
 // Play
-player.play();
+player.play()
 ```
 
 ## Audio Recording
@@ -52,37 +52,40 @@ player.play();
 ### Before (expo-av)
 
 ```tsx
-const [recording, setRecording] = useState<Audio.Recording>();
+const [recording, setRecording] = useState<Audio.Recording>()
 
 async function startRecording() {
-  await Audio.requestPermissionsAsync();
-  await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
-  const { recording } = await Audio.Recording.createAsync(
-    Audio.RecordingOptionsPresets.HIGH_QUALITY,
-  );
-  setRecording(recording);
+	await Audio.requestPermissionsAsync()
+	await Audio.setAudioModeAsync({
+		allowsRecordingIOS: true,
+		playsInSilentModeIOS: true,
+	})
+	const {recording} = await Audio.Recording.createAsync(
+		Audio.RecordingOptionsPresets.HIGH_QUALITY,
+	)
+	setRecording(recording)
 }
 
 async function stopRecording() {
-  await recording?.stopAndUnloadAsync();
-  const uri = recording?.getURI();
+	await recording?.stopAndUnloadAsync()
+	const uri = recording?.getURI()
 }
 ```
 
 ### After (expo-audio)
 
 ```tsx
-const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY)
 
 async function startRecording() {
-  await AudioModule.requestRecordingPermissionsAsync();
-  await recorder.prepareToRecordAsync();
-  recorder.record();
+	await AudioModule.requestRecordingPermissionsAsync()
+	await recorder.prepareToRecordAsync()
+	recorder.record()
 }
 
 async function stopRecording() {
-  await recorder.stop();
-  const uri = recorder.uri;
+	await recorder.stop()
+	const uri = recorder.uri
 }
 ```
 
@@ -92,21 +95,21 @@ async function stopRecording() {
 
 ```tsx
 await Audio.setAudioModeAsync({
-  allowsRecordingIOS: true,
-  playsInSilentModeIOS: true,
-  staysActiveInBackground: true,
-  interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-});
+	allowsRecordingIOS: true,
+	playsInSilentModeIOS: true,
+	staysActiveInBackground: true,
+	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+})
 ```
 
 ### After (expo-audio)
 
 ```tsx
 await setAudioModeAsync({
-  playsInSilentMode: true,
-  shouldPlayInBackground: true,
-  interruptionMode: 'doNotMix',
-});
+	playsInSilentMode: true,
+	shouldPlayInBackground: true,
+	interruptionMode: 'doNotMix',
+})
 ```
 
 ## API Mapping

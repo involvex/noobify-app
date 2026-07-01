@@ -54,52 +54,52 @@ Create `store.config.json` at your project root:
 
 ```json
 {
-  "configVersion": 0,
-  "apple": {
-    "copyright": "2025 Your Company",
-    "categories": ["UTILITIES", "PRODUCTIVITY"],
-    "info": {
-      "en-US": {
-        "title": "App Name",
-        "subtitle": "Your compelling tagline",
-        "description": "Full app description...",
-        "keywords": ["keyword1", "keyword2", "keyword3"],
-        "releaseNotes": "What's new in this version...",
-        "promoText": "Limited time offer!",
-        "privacyPolicyUrl": "https://example.com/privacy",
-        "supportUrl": "https://example.com/support",
-        "marketingUrl": "https://example.com"
-      }
-    },
-    "advisory": {
-      "alcoholTobaccoOrDrugUseOrReferences": "NONE",
-      "gamblingSimulated": "NONE",
-      "medicalOrTreatmentInformation": "NONE",
-      "profanityOrCrudeHumor": "NONE",
-      "sexualContentGraphicAndNudity": "NONE",
-      "sexualContentOrNudity": "NONE",
-      "horrorOrFearThemes": "NONE",
-      "matureOrSuggestiveThemes": "NONE",
-      "violenceCartoonOrFantasy": "NONE",
-      "violenceRealistic": "NONE",
-      "violenceRealisticProlongedGraphicOrSadistic": "NONE",
-      "contests": "NONE",
-      "gambling": false,
-      "unrestrictedWebAccess": false,
-      "seventeenPlus": false
-    },
-    "release": {
-      "automaticRelease": true,
-      "phasedRelease": true
-    },
-    "review": {
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "review@example.com",
-      "phone": "+1 555-123-4567",
-      "notes": "Demo account: test@example.com / password123"
-    }
-  }
+	"configVersion": 0,
+	"apple": {
+		"copyright": "2025 Your Company",
+		"categories": ["UTILITIES", "PRODUCTIVITY"],
+		"info": {
+			"en-US": {
+				"title": "App Name",
+				"subtitle": "Your compelling tagline",
+				"description": "Full app description...",
+				"keywords": ["keyword1", "keyword2", "keyword3"],
+				"releaseNotes": "What's new in this version...",
+				"promoText": "Limited time offer!",
+				"privacyPolicyUrl": "https://example.com/privacy",
+				"supportUrl": "https://example.com/support",
+				"marketingUrl": "https://example.com"
+			}
+		},
+		"advisory": {
+			"alcoholTobaccoOrDrugUseOrReferences": "NONE",
+			"gamblingSimulated": "NONE",
+			"medicalOrTreatmentInformation": "NONE",
+			"profanityOrCrudeHumor": "NONE",
+			"sexualContentGraphicAndNudity": "NONE",
+			"sexualContentOrNudity": "NONE",
+			"horrorOrFearThemes": "NONE",
+			"matureOrSuggestiveThemes": "NONE",
+			"violenceCartoonOrFantasy": "NONE",
+			"violenceRealistic": "NONE",
+			"violenceRealisticProlongedGraphicOrSadistic": "NONE",
+			"contests": "NONE",
+			"gambling": false,
+			"unrestrictedWebAccess": false,
+			"seventeenPlus": false
+		},
+		"release": {
+			"automaticRelease": true,
+			"phasedRelease": true
+		},
+		"review": {
+			"firstName": "John",
+			"lastName": "Doe",
+			"email": "review@example.com",
+			"phone": "+1 555-123-4567",
+			"notes": "Demo account: test@example.com / password123"
+		}
+	}
 }
 ```
 
@@ -111,7 +111,7 @@ The title is the most important ranking factor. Include your brand name and 1-2 
 
 ```json
 {
-  "title": "Budgetly - Money Tracker"
+	"title": "Budgetly - Money Tracker"
 }
 ```
 
@@ -128,7 +128,7 @@ The subtitle appears below your title in search results. Use it for your unique 
 
 ```json
 {
-  "subtitle": "Smart Expense & Budget Planner"
+	"subtitle": "Smart Expense & Budget Planner"
 }
 ```
 
@@ -145,9 +145,9 @@ Hidden from users but crucial for discoverability. Use comma-separated keywords 
 
 ```json
 {
-  "keywords": [
-    "finance,budget,expense,money,tracker,savings,bills,income,spending,wallet,personal,weekly,monthly"
-  ]
+	"keywords": [
+		"finance,budget,expense,money,tracker,savings,bills,income,spending,wallet,personal,weekly,monthly"
+	]
 }
 ```
 
@@ -168,7 +168,7 @@ The iOS description is NOT indexed for search but critical for conversion. Focus
 
 ```json
 {
-  "description": "Take control of your finances with Budgetly, the intuitive money management app trusted by over 1 million users.\n\nKEY FEATURES:\n• Smart budget tracking - Set limits and watch your progress\n• Expense categorization - Know exactly where your money goes\n• Bill reminders - Never miss a payment\n• Beautiful charts - Visualize your financial health\n• Bank sync - Connect 10,000+ institutions\n• Cloud backup - Your data, always safe\n\nWHY BUDGETLY?\nUnlike complex spreadsheets or basic calculators, Budgetly learns your spending habits and provides personalized insights. Our users save an average of $300/month within 3 months.\n\nPRIVACY FIRST\nYour financial data is encrypted end-to-end. We never sell your information.\n\nDownload Budgetly today and start your journey to financial freedom!"
+	"description": "Take control of your finances with Budgetly, the intuitive money management app trusted by over 1 million users.\n\nKEY FEATURES:\n• Smart budget tracking - Set limits and watch your progress\n• Expense categorization - Know exactly where your money goes\n• Bill reminders - Never miss a payment\n• Beautiful charts - Visualize your financial health\n• Bank sync - Connect 10,000+ institutions\n• Cloud backup - Your data, always safe\n\nWHY BUDGETLY?\nUnlike complex spreadsheets or basic calculators, Budgetly learns your spending habits and provides personalized insights. Our users save an average of $300/month within 3 months.\n\nPRIVACY FIRST\nYour financial data is encrypted end-to-end. We never sell your information.\n\nDownload Budgetly today and start your journey to financial freedom!"
 }
 ```
 
@@ -187,7 +187,7 @@ Shown to existing users deciding whether to update.
 
 ```json
 {
-  "releaseNotes": "Version 2.5 brings exciting improvements:\n\n• NEW: Dark mode support\n• NEW: Widget for home screen\n• IMPROVED: 50% faster sync\n• FIXED: Notification timing issues\n\nLove Budgetly? Please leave a review!"
+	"releaseNotes": "Version 2.5 brings exciting improvements:\n\n• NEW: Dark mode support\n• NEW: Widget for home screen\n• IMPROVED: 50% faster sync\n• FIXED: Notification timing issues\n\nLove Budgetly? Please leave a review!"
 }
 ```
 
@@ -197,7 +197,7 @@ Appears above description; can be updated without new binary. Great for time-sen
 
 ```json
 {
-  "promoText": "🎉 New Year Special: Premium features free for 30 days! Start 2025 with better finances."
+	"promoText": "🎉 New Year Special: Premium features free for 30 days! Start 2025 with better finances."
 }
 ```
 
@@ -207,7 +207,7 @@ Primary category is most important for browsing and rankings.
 
 ```json
 {
-  "categories": ["FINANCE", "PRODUCTIVITY"]
+	"categories": ["FINANCE", "PRODUCTIVITY"]
 }
 ```
 
@@ -230,28 +230,28 @@ Localize metadata for each target market. Keywords should be researched per loca
 
 ```json
 {
-  "info": {
-    "en-US": {
-      "title": "Budgetly - Money Tracker",
-      "subtitle": "Smart Expense Planner",
-      "keywords": ["budget,finance,money,expense,tracker"]
-    },
-    "es-ES": {
-      "title": "Budgetly - Control de Gastos",
-      "subtitle": "Planificador de Presupuesto",
-      "keywords": ["presupuesto,finanzas,dinero,gastos,ahorro"]
-    },
-    "ja": {
-      "title": "Budgetly - 家計簿アプリ",
-      "subtitle": "簡単支出管理",
-      "keywords": ["家計簿,支出,予算,節約,お金"]
-    },
-    "de-DE": {
-      "title": "Budgetly - Haushaltsbuch",
-      "subtitle": "Ausgaben Verwalten",
-      "keywords": ["budget,finanzen,geld,ausgaben,sparen"]
-    }
-  }
+	"info": {
+		"en-US": {
+			"title": "Budgetly - Money Tracker",
+			"subtitle": "Smart Expense Planner",
+			"keywords": ["budget,finance,money,expense,tracker"]
+		},
+		"es-ES": {
+			"title": "Budgetly - Control de Gastos",
+			"subtitle": "Planificador de Presupuesto",
+			"keywords": ["presupuesto,finanzas,dinero,gastos,ahorro"]
+		},
+		"ja": {
+			"title": "Budgetly - 家計簿アプリ",
+			"subtitle": "簡単支出管理",
+			"keywords": ["家計簿,支出,予算,節約,お金"]
+		},
+		"de-DE": {
+			"title": "Budgetly - Haushaltsbuch",
+			"subtitle": "Ausgaben Verwalten",
+			"keywords": ["budget,finanzen,geld,ausgaben,sparen"]
+		}
+	}
 }
 ```
 
@@ -266,17 +266,17 @@ Use JavaScript for dynamic values like copyright year or fetched translations.
 
 ```js
 // store.config.js
-const baseConfig = require('./store.config.json');
+const baseConfig = require('./store.config.json')
 
-const year = new Date().getFullYear();
+const year = new Date().getFullYear()
 
 module.exports = {
-  ...baseConfig,
-  apple: {
-    ...baseConfig.apple,
-    copyright: `${year} Your Company, Inc.`,
-  },
-};
+	...baseConfig,
+	apple: {
+		...baseConfig.apple,
+		copyright: `${year} Your Company, Inc.`,
+	},
+}
 ```
 
 ### Async Configuration (External Localization)
@@ -284,52 +284,54 @@ module.exports = {
 ```js
 // store.config.js
 module.exports = async () => {
-  const baseConfig = require('./store.config.json');
+	const baseConfig = require('./store.config.json')
 
-  // Fetch translations from CMS/localization service
-  const translations = await fetch('https://api.example.com/app-store-copy').then((r) => r.json());
+	// Fetch translations from CMS/localization service
+	const translations = await fetch(
+		'https://api.example.com/app-store-copy',
+	).then(r => r.json())
 
-  return {
-    ...baseConfig,
-    apple: {
-      ...baseConfig.apple,
-      info: translations,
-    },
-  };
-};
+	return {
+		...baseConfig,
+		apple: {
+			...baseConfig.apple,
+			info: translations,
+		},
+	}
+}
 ```
 
 ### Environment-Based Config
 
 ```js
 // store.config.js
-const baseConfig = require('./store.config.json');
+const baseConfig = require('./store.config.json')
 
-const isProduction = process.env.EAS_BUILD_PROFILE === 'production';
+const isProduction = process.env.EAS_BUILD_PROFILE === 'production'
 
 module.exports = {
-  ...baseConfig,
-  apple: {
-    ...baseConfig.apple,
-    info: {
-      'en-US': {
-        ...baseConfig.apple.info['en-US'],
-        promoText: isProduction
-          ? 'Download now and get started!'
-          : '[BETA] Help us test new features!',
-      },
-    },
-  },
-};
+	...baseConfig,
+	apple: {
+		...baseConfig.apple,
+		info: {
+			'en-US': {
+				...baseConfig.apple.info['en-US'],
+				promoText: isProduction
+					? 'Download now and get started!'
+					: '[BETA] Help us test new features!',
+			},
+		},
+	},
+}
 ```
 
 Update `eas.json` to use JS config:
 
 ```json
 {
-  "cli": {
-    "metadataPath": "./store.config.js"
-  }
+	"cli": {
+		"metadataPath": "./store.config.js"
+	}
 }
 ```
 
@@ -345,24 +347,24 @@ Answer content questions honestly to get an appropriate age rating.
 
 ```json
 {
-  "advisory": {
-    "alcoholTobaccoOrDrugUseOrReferences": "NONE",
-    "contests": "NONE",
-    "gambling": false,
-    "gamblingSimulated": "NONE",
-    "horrorOrFearThemes": "NONE",
-    "matureOrSuggestiveThemes": "NONE",
-    "medicalOrTreatmentInformation": "NONE",
-    "profanityOrCrudeHumor": "NONE",
-    "sexualContentGraphicAndNudity": "NONE",
-    "sexualContentOrNudity": "NONE",
-    "unrestrictedWebAccess": false,
-    "violenceCartoonOrFantasy": "NONE",
-    "violenceRealistic": "NONE",
-    "violenceRealisticProlongedGraphicOrSadistic": "NONE",
-    "seventeenPlus": false,
-    "kidsAgeBand": "NINE_TO_ELEVEN"
-  }
+	"advisory": {
+		"alcoholTobaccoOrDrugUseOrReferences": "NONE",
+		"contests": "NONE",
+		"gambling": false,
+		"gamblingSimulated": "NONE",
+		"horrorOrFearThemes": "NONE",
+		"matureOrSuggestiveThemes": "NONE",
+		"medicalOrTreatmentInformation": "NONE",
+		"profanityOrCrudeHumor": "NONE",
+		"sexualContentGraphicAndNudity": "NONE",
+		"sexualContentOrNudity": "NONE",
+		"unrestrictedWebAccess": false,
+		"violenceCartoonOrFantasy": "NONE",
+		"violenceRealistic": "NONE",
+		"violenceRealisticProlongedGraphicOrSadistic": "NONE",
+		"seventeenPlus": false,
+		"kidsAgeBand": "NINE_TO_ELEVEN"
+	}
 }
 ```
 
@@ -374,10 +376,10 @@ Control how your app rolls out to users.
 
 ```json
 {
-  "release": {
-    "automaticRelease": true,
-    "phasedRelease": true
-  }
+	"release": {
+		"automaticRelease": true,
+		"phasedRelease": true
+	}
 }
 ```
 
@@ -394,15 +396,15 @@ Provide contact info and test credentials for the App Review team.
 
 ```json
 {
-  "review": {
-    "firstName": "Jane",
-    "lastName": "Smith",
-    "email": "app-review@company.com",
-    "phone": "+1 (555) 123-4567",
-    "demoUsername": "demo@example.com",
-    "demoPassword": "ReviewDemo2025!",
-    "notes": "To test premium features:\n1. Log in with demo credentials\n2. Navigate to Settings > Subscription\n3. Tap 'Restore Purchase' - sandbox purchase will be restored\n\nFor location features, allow location access when prompted."
-  }
+	"review": {
+		"firstName": "Jane",
+		"lastName": "Smith",
+		"email": "app-review@company.com",
+		"phone": "+1 (555) 123-4567",
+		"demoUsername": "demo@example.com",
+		"demoPassword": "ReviewDemo2025!",
+		"notes": "To test premium features:\n1. Log in with demo credentials\n2. Navigate to Settings > Subscription\n3. Tap 'Restore Purchase' - sandbox purchase will be restored\n\nFor location features, allow location access when prompted."
+	}
 }
 ```
 

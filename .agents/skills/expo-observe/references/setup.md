@@ -41,28 +41,28 @@ The HOC automatically measures **Time to First Render (TTR)**. Apply it to the f
 
 ```tsx
 // app/_layout.tsx
-import { Stack } from 'expo-router';
-import { AppMetricsRoot } from 'expo-observe';
+import {AppMetricsRoot} from 'expo-observe'
+import {Stack} from 'expo-router'
 
 function RootLayout() {
-  return <Stack />;
+	return <Stack />
 }
 
-export default AppMetricsRoot.wrap(RootLayout);
+export default AppMetricsRoot.wrap(RootLayout)
 ```
 
 **SDK 56 and later** — use `ObserveRoot`:
 
 ```tsx
 // app/_layout.tsx
-import { Stack } from 'expo-router';
-import { ObserveRoot } from 'expo-observe';
+import {ObserveRoot} from 'expo-observe'
+import {Stack} from 'expo-router'
 
 function RootLayout() {
-  return <Stack />;
+	return <Stack />
 }
 
-export default ObserveRoot.wrap(RootLayout);
+export default ObserveRoot.wrap(RootLayout)
 ```
 
 **Without Expo Router** (`App.tsx`): wrap the default-exported `App` component the same way — `export default AppMetricsRoot.wrap(App);` on SDK 55, or `export default ObserveRoot.wrap(App);` on SDK 56+.
@@ -75,85 +75,85 @@ TTI is **not** collected automatically. Signal it once the screen is genuinely r
 
 ```tsx
 // app/_layout.tsx
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { AppMetrics, AppMetricsRoot } from 'expo-observe';
-import { useEffect, useState } from 'react';
+import {AppMetrics, AppMetricsRoot} from 'expo-observe'
+import * as SplashScreen from 'expo-splash-screen'
+import {useEffect, useState} from 'react'
+import {Stack} from 'expo-router'
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync()
 
 function RootLayout() {
-  const [isReady, setIsReady] = useState(false);
+	const [isReady, setIsReady] = useState(false)
 
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await authenticateUser();
-        await fetchInitialData();
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setIsReady(true);
-      }
-    }
-    prepare();
-  }, []);
+	useEffect(() => {
+		async function prepare() {
+			try {
+				await authenticateUser()
+				await fetchInitialData()
+			} catch (e) {
+				console.warn(e)
+			} finally {
+				setIsReady(true)
+			}
+		}
+		prepare()
+	}, [])
 
-  useEffect(() => {
-    if (isReady) {
-      SplashScreen.hide();
-      AppMetrics.markInteractive();
-    }
-  }, [isReady]);
+	useEffect(() => {
+		if (isReady) {
+			SplashScreen.hide()
+			AppMetrics.markInteractive()
+		}
+	}, [isReady])
 
-  if (!isReady) return null;
-  return <Stack />;
+	if (!isReady) return null
+	return <Stack />
 }
 
-export default AppMetricsRoot.wrap(RootLayout);
+export default AppMetricsRoot.wrap(RootLayout)
 ```
 
 **SDK 56 and later** — use the `useObserve()` hook to get a bound `markInteractive`:
 
 ```tsx
 // app/_layout.tsx
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { ObserveRoot, useObserve } from 'expo-observe';
-import { useEffect, useState } from 'react';
+import {ObserveRoot, useObserve} from 'expo-observe'
+import * as SplashScreen from 'expo-splash-screen'
+import {useEffect, useState} from 'react'
+import {Stack} from 'expo-router'
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync()
 
 function RootLayout() {
-  const [isReady, setIsReady] = useState(false);
-  const { markInteractive } = useObserve();
+	const [isReady, setIsReady] = useState(false)
+	const {markInteractive} = useObserve()
 
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await authenticateUser();
-        await fetchInitialData();
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setIsReady(true);
-      }
-    }
-    prepare();
-  }, []);
+	useEffect(() => {
+		async function prepare() {
+			try {
+				await authenticateUser()
+				await fetchInitialData()
+			} catch (e) {
+				console.warn(e)
+			} finally {
+				setIsReady(true)
+			}
+		}
+		prepare()
+	}, [])
 
-  useEffect(() => {
-    if (isReady) {
-      SplashScreen.hide();
-      markInteractive();
-    }
-  }, [isReady, markInteractive]);
+	useEffect(() => {
+		if (isReady) {
+			SplashScreen.hide()
+			markInteractive()
+		}
+	}, [isReady, markInteractive])
 
-  if (!isReady) return null;
-  return <Stack />;
+	if (!isReady) return null
+	return <Stack />
 }
 
-export default ObserveRoot.wrap(RootLayout);
+export default ObserveRoot.wrap(RootLayout)
 ```
 
 **Without Expo Router:** the structure is the same in `App.tsx`. Use `SplashScreen.hideAsync()` instead of `SplashScreen.hide()` and replace `<Stack />` with the app's root tree.
@@ -192,11 +192,11 @@ Docs: https://docs.expo.dev/eas/observe/integrations/expo-router/
 
    ```tsx
    // app/_layout.tsx
-   import { Observe } from 'expo-observe';
+   import {Observe} from 'expo-observe'
 
    Observe.configure({
-     integrations: { 'expo-router': true },
-   });
+   	integrations: {'expo-router': true},
+   })
    ```
 
 2. Call `useObserve()` inside each screen to get a `markInteractive` scoped to the current route, and call it from a `useEffect` once the screen is interactive:
@@ -226,20 +226,24 @@ Requires `@react-navigation/native` 7.0.0 or later. Same `useObserve()` screen u
 
    ```tsx
    // App.tsx
-   import { Observe } from 'expo-observe';
+   import {Observe} from 'expo-observe'
 
    Observe.configure({
-     integrations: { 'react-navigation': true },
-   });
+   	integrations: {'react-navigation': true},
+   })
    ```
 
 2. Replace the top-level `<NavigationContainer>` with `<ObserveNavigationContainer>` — a drop-in replacement that accepts the same props and forwards the same ref. If you pass a `linking` config it is used to resolve a human-readable screen path; otherwise the metric falls back to `route.name`.
 
    ```tsx
-   import { ObserveNavigationContainer } from 'expo-observe/integrations/react-navigation';
+   import {ObserveNavigationContainer} from 'expo-observe/integrations/react-navigation'
 
    export default function App() {
-     return <ObserveNavigationContainer>{/* navigators */}</ObserveNavigationContainer>;
+   	return (
+   		<ObserveNavigationContainer>
+   			{/* navigators */}
+   		</ObserveNavigationContainer>
+   	)
    }
    ```
 

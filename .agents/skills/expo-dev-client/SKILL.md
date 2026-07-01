@@ -25,23 +25,23 @@ Ensure `eas.json` has a development profile:
 
 ```json
 {
-  "cli": {
-    "version": ">= 16.0.1",
-    "appVersionSource": "remote"
-  },
-  "build": {
-    "production": {
-      "autoIncrement": true
-    },
-    "development": {
-      "autoIncrement": true,
-      "developmentClient": true
-    }
-  },
-  "submit": {
-    "production": {},
-    "development": {}
-  }
+	"cli": {
+		"version": ">= 16.0.1",
+		"appVersionSource": "remote"
+	},
+	"build": {
+		"production": {
+			"autoIncrement": true
+		},
+		"development": {
+			"autoIncrement": true,
+			"developmentClient": true
+		}
+	},
+	"submit": {
+		"production": {},
+		"development": {}
+	}
 }
 ```
 

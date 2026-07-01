@@ -3,7 +3,7 @@ name: expo-skill-eval
 description: Evaluate Expo skills in this repo end-to-end - trigger accuracy, generated code quality, and runtime screenshots on iOS simulator and Android emulator via Expo Go (web optional). Use when the user wants to eval an Expo skill, test that a skill produces working code, benchmark a skill with device screenshots, or verify a skill's output renders correctly.
 version: 1.0.0
 license: MIT
-allowed-tools: 'Read(~/.cache/expo-skill-eval/**), Read(/tmp/expo-skill-eval-*/**), Read(/private/tmp/expo-skill-eval-*/**), Write(/tmp/expo-skill-eval-*/**), Write(/private/tmp/expo-skill-eval-*/**), Edit(/tmp/expo-skill-eval-*/**), Edit(/private/tmp/expo-skill-eval-*/**), Bash(python3 /tmp/expo-skill-eval-*), Bash(python3 /private/tmp/expo-skill-eval-*), Bash(python3 *expo-skill-eval/scripts/*), Bash(tee /tmp/expo-skill-eval-*), Bash(tee /private/tmp/expo-skill-eval-*), Bash(bash *expo-skill-eval/scripts/*)'
+allowed-tools: Read(~/.cache/expo-skill-eval/**), Read(/tmp/expo-skill-eval-*/**), Read(/private/tmp/expo-skill-eval-*/**), Write(/tmp/expo-skill-eval-*/**), Write(/private/tmp/expo-skill-eval-*/**), Edit(/tmp/expo-skill-eval-*/**), Edit(/private/tmp/expo-skill-eval-*/**), Bash(python3 /tmp/expo-skill-eval-*), Bash(python3 /private/tmp/expo-skill-eval-*), Bash(python3 *expo-skill-eval/scripts/*), Bash(tee /tmp/expo-skill-eval-*), Bash(tee /private/tmp/expo-skill-eval-*), Bash(bash *expo-skill-eval/scripts/*)
 ---
 
 # Expo Skill Eval
@@ -94,19 +94,22 @@ You generate the run's eval cases — one per chosen prompt — and write them t
 
 ```json
 {
-  "id": 1,
-  "prompt": "Build me a settings screen with a dark mode toggle and a list of options",
-  "expected_output": "Working Expo Router screen",
-  "expectations": ["Uses Expo Router file-based routing", "TypeScript compiles with no errors"],
-  "runtime": {
-    "mode": "expo-go",
-    "platforms": ["ios", "android"],
-    "sdk": "56"
-  },
-  "visual_expectations": [
-    "No red error screen or Expo Go error overlay on any platform",
-    "A settings screen with a visible toggle control is rendered"
-  ]
+	"id": 1,
+	"prompt": "Build me a settings screen with a dark mode toggle and a list of options",
+	"expected_output": "Working Expo Router screen",
+	"expectations": [
+		"Uses Expo Router file-based routing",
+		"TypeScript compiles with no errors"
+	],
+	"runtime": {
+		"mode": "expo-go",
+		"platforms": ["ios", "android"],
+		"sdk": "56"
+	},
+	"visual_expectations": [
+		"No red error screen or Expo Go error overlay on any platform",
+		"A settings screen with a visible toggle control is rendered"
+	]
 }
 ```
 
@@ -125,10 +128,12 @@ An image-prompt case is a normal case with `reference_image` set; enable "Runtim
 
 ```json
 {
-  "prompt": "Build an app whose UI matches the attached reference screenshot.",
-  "reference_image": "/abs/path/to/target.png",
-  "runtime": { "mode": "expo-go", "platforms": ["ios"], "sdk": "56" },
-  "visual_expectations": ["Matches the reference's layout, components, and color treatment"]
+	"prompt": "Build an app whose UI matches the attached reference screenshot.",
+	"reference_image": "/abs/path/to/target.png",
+	"runtime": {"mode": "expo-go", "platforms": ["ios"], "sdk": "56"},
+	"visual_expectations": [
+		"Matches the reference's layout, components, and color treatment"
+	]
 }
 ```
 
@@ -233,23 +238,28 @@ The grader writes `grading.json` next to the outputs with this shape:
 
 ```json
 {
-  "score": 8.5,
-  "max_score": 9,
-  "expectations": [{ "text": "...", "passed": true, "evidence": "..." }],
-  "reference_match": {
-    "score": 7,
-    "max": 10,
-    "evidence": "ios.png vs target.png: same two-section grouped list + toggle; accent color differs (blue vs target's green); row spacing tighter than target"
-  },
-  "quality": {
-    "dimensions": [
-      { "name": "Layout & hierarchy", "score": 2, "max": 3, "evidence": "ios.png: …" }
-    ],
-    "subtotal": 17,
-    "max": 24,
-    "summary": "…"
-  },
-  "user_notes_summary": { "needs_review": false, "notes": "" }
+	"score": 8.5,
+	"max_score": 9,
+	"expectations": [{"text": "...", "passed": true, "evidence": "..."}],
+	"reference_match": {
+		"score": 7,
+		"max": 10,
+		"evidence": "ios.png vs target.png: same two-section grouped list + toggle; accent color differs (blue vs target's green); row spacing tighter than target"
+	},
+	"quality": {
+		"dimensions": [
+			{
+				"name": "Layout & hierarchy",
+				"score": 2,
+				"max": 3,
+				"evidence": "ios.png: …"
+			}
+		],
+		"subtotal": 17,
+		"max": 24,
+		"summary": "…"
+	},
+	"user_notes_summary": {"needs_review": false, "notes": ""}
 }
 ```
 

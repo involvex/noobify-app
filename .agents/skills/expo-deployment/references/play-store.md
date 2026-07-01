@@ -28,14 +28,14 @@ Add the service account key path to `eas.json`:
 
 ```json
 {
-  "submit": {
-    "production": {
-      "android": {
-        "serviceAccountKeyPath": "./google-service-account.json",
-        "track": "internal"
-      }
-    }
-  }
+	"submit": {
+		"production": {
+			"android": {
+				"serviceAccountKeyPath": "./google-service-account.json",
+				"track": "internal"
+			}
+		}
+	}
 }
 ```
 
@@ -60,13 +60,13 @@ Then reference in `eas.json`:
 
 ```json
 {
-  "submit": {
-    "production": {
-      "android": {
-        "serviceAccountKeyPath": "@secret:GOOGLE_SERVICE_ACCOUNT"
-      }
-    }
-  }
+	"submit": {
+		"production": {
+			"android": {
+				"serviceAccountKeyPath": "@secret:GOOGLE_SERVICE_ACCOUNT"
+			}
+		}
+	}
 }
 ```
 
@@ -85,20 +85,20 @@ Google Play uses tracks for staged rollouts:
 
 ```json
 {
-  "submit": {
-    "production": {
-      "android": {
-        "track": "production",
-        "releaseStatus": "completed"
-      }
-    },
-    "internal": {
-      "android": {
-        "track": "internal",
-        "releaseStatus": "completed"
-      }
-    }
-  }
+	"submit": {
+		"production": {
+			"android": {
+				"track": "production",
+				"releaseStatus": "completed"
+			}
+		},
+		"internal": {
+			"android": {
+				"track": "internal",
+				"releaseStatus": "completed"
+			}
+		}
+	}
 }
 ```
 
@@ -113,15 +113,15 @@ Google Play uses tracks for staged rollouts:
 
 ```json
 {
-  "submit": {
-    "production": {
-      "android": {
-        "track": "production",
-        "releaseStatus": "inProgress",
-        "rollout": 0.1
-      }
-    }
-  }
+	"submit": {
+		"production": {
+			"android": {
+				"track": "production",
+				"releaseStatus": "inProgress",
+				"rollout": 0.1
+			}
+		}
+	}
 }
 ```
 
@@ -162,11 +162,11 @@ Android requires incrementing `versionCode` for each upload:
 
 ```json
 {
-  "build": {
-    "production": {
-      "autoIncrement": true
-    }
-  }
+	"build": {
+		"production": {
+			"autoIncrement": true
+		}
+	}
 }
 ```
 
@@ -204,13 +204,13 @@ Play Store requires AAB (Android App Bundle) for new apps:
 
 ```json
 {
-  "build": {
-    "production": {
-      "android": {
-        "buildType": "app-bundle"
-      }
-    }
-  }
+	"build": {
+		"production": {
+			"android": {
+				"buildType": "app-bundle"
+			}
+		}
+	}
 }
 ```
 
