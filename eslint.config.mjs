@@ -13,6 +13,7 @@ export default tseslint.config(
       'ios/**',
       '*.config.js',
       'scripts/**',
+      '.agents/**',
     ],
   },
   js.configs.recommended,
