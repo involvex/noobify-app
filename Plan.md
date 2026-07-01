@@ -5,7 +5,7 @@
 1. **Model Management**: We will use `expo-file-system` to download and store the `.gguf` file locally so we don't bloat the APK.
 2. **Offline Data**: We will use Expo's native `expo-sqlite` (which had a major upgrade recently) to store history, completely avoiding the headaches of MMKV.
 3. **UI Engine**: `react-native-paper` fully supports Material Design 3 and meshes beautifully with Expo Router's file-based navigation.
-4. **Pre-built C++**: We will tell Bun to trust `llama.rn`, which allows it to download the *pre-built* native files. This means your local APK build will take minutes, not hours.
+4. **Pre-built C++**: We will tell Bun to trust `llama.rn`, which allows it to download the _pre-built_ native files. This means your local APK build will take minutes, not hours.
 
 ---
 
@@ -62,3 +62,4 @@ Core Implementation:
 ## References
 
 - https://github.com/mybigday/llama.rn
+```

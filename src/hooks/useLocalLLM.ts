@@ -2,15 +2,18 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { Paths, File } from 'expo-file-system';
 import { initLlama, type LlamaContext } from 'llama.rn';
 
+import { findTerm, generateContext, buildMergedIndex, getTermCategory } from '@/skills/_index';
+import type { TermDefinition } from '@/skills/types';
+
 const MODEL_FILE_NAME = 'qwen2.5-0.5b-instruct-q4_k_m.gguf';
 const MODEL_URL =
   'https://huggingface.co/bartowski/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/Qwen2.5-0.5B-Instruct-Q4_K_M.gguf';
 
-const EN_SYSTEM_PROMPT =
-  "You are a witty translator for beginners. Explain the user's tech term using an everyday analogy (e.g. cooking, cars). Keep it under 60 words.";
+const EN_BASE_SYSTEM_PROMPT =
+  'You are a witty tech translator for beginners. Explain tech terms using everyday analogies (cooking, cars, sports, etc.). Keep it under 60 words. Be accurate and helpful.';
 
-const DE_SYSTEM_PROMPT =
-  'Du bist ein lustiger Übersetzer für Anfänger. Erkläre den technischen Begriff des Benutzers mit einer alltäglichen Analogie (z.B. Kochen, Autos). Halte es unter 60 Wörtern.';
+const DE_BASE_SYSTEM_PROMPT =
+  'Du bist ein lustiger Tech-Übersetzer für Anfänger. Erkläre technische Begriffe mit alltäglichen Analogien (Kochen, Autos, Sport, etc.). Halte es unter 60 Wörtern. Sei präzise und hilfsbereit.';
 
 export type Language = 'en' | 'de';
 export type DownloadState = 'idle' | 'checking' | 'downloading' | 'ready' | 'error';
@@ -23,6 +26,8 @@ export interface LLMState {
   generationState: GenerationState;
   generatedText: string;
   error: string | null;
+  matchedTerm: TermDefinition | null;
+  termCategory: string | null;
 }
 
 const initialState: LLMState = {
@@ -32,6 +37,8 @@ const initialState: LLMState = {
   generationState: 'idle',
   generatedText: '',
   error: null,
+  matchedTerm: null,
+  termCategory: null,
 };
 
 let _llamaContext: LlamaContext | null = null;
@@ -42,6 +49,63 @@ function getModelFile(): File {
 
 function getModelPath(): string {
   return getModelFile().uri;
+}
+
+async function buildEnhancedPrompt(
+  term: string,
+  language: Language,
+): Promise<{
+  systemPrompt: string;
+  userPrompt: string;
+  matchedTerm: TermDefinition | null;
+  category: string | null;
+}> {
+  const index = await buildMergedIndex();
+  const matchedTerm = findTerm(term, index);
+  const category = matchedTerm ? getTermCategory(term, index) : null;
+
+  if (!matchedTerm) {
+    const baseSystem = language === 'en' ? EN_BASE_SYSTEM_PROMPT : DE_BASE_SYSTEM_PROMPT;
+    const userPrompt =
+      language === 'en'
+        ? `Explain this tech term with a simple everyday analogy: ${term}`
+        : `Erkläre diesen Fachbegriff mit einer einfachen alltäglichen Analogie: ${term}`;
+
+    return { systemPrompt: baseSystem, userPrompt, matchedTerm: null, category: null };
+  }
+
+  const context = generateContext(matchedTerm, language);
+  const categoryLabel = category ?? 'technology';
+
+  let systemPrompt: string;
+  if (language === 'en') {
+    systemPrompt = [
+      EN_BASE_SYSTEM_PROMPT,
+      '',
+      'You have expert knowledge about this specific term. Use the context below to ensure accuracy:',
+      '',
+      context,
+      '',
+      `The term belongs to the "${categoryLabel}" category.`,
+    ].join('\n');
+  } else {
+    systemPrompt = [
+      DE_BASE_SYSTEM_PROMPT,
+      '',
+      'Du hast Expertenwissen über diesen spezifischen Begriff. Nutze den Kontext unten für Genauigkeit:',
+      '',
+      context,
+      '',
+      `Der Begriff gehört zur Kategorie "${categoryLabel}".`,
+    ].join('\n');
+  }
+
+  const userPrompt =
+    language === 'en'
+      ? `Explain this tech term with a simple everyday analogy: ${matchedTerm.name}`
+      : `Erkläre diesen Fachbegriff mit einer einfachen alltäglichen Analogie: ${matchedTerm.name}`;
+
+  return { systemPrompt, userPrompt, matchedTerm, category };
 }
 
 export function useLocalLLM() {
@@ -127,14 +191,15 @@ export function useLocalLLM() {
         generationState: 'generating',
         generatedText: '',
         error: null,
+        matchedTerm: null,
+        termCategory: null,
       }));
 
       try {
-        const systemPrompt = language === 'en' ? EN_SYSTEM_PROMPT : DE_SYSTEM_PROMPT;
-        const userPrompt =
-          language === 'en'
-            ? `Explain this tech term with a simple everyday analogy: ${term}`
-            : `Erkläre diesen Fachbegriff mit einer einfachen alltäglichen Analogie: ${term}`;
+        const { systemPrompt, userPrompt, matchedTerm, category } = await buildEnhancedPrompt(
+          term,
+          language,
+        );
 
         const stopWords = [
           '</s>',
@@ -167,7 +232,7 @@ export function useLocalLLM() {
           },
         );
 
-        setState((s) => ({ ...s, generationState: 'done' }));
+        setState((s) => ({ ...s, generationState: 'done', matchedTerm, termCategory: category }));
         return fullText;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';

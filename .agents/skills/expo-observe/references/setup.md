@@ -8,11 +8,11 @@ EAS Observe collects app-startup performance metrics (cold launch, warm launch, 
 
 The library exports differ between SDK versions. Pick the right one for the project's SDK before copying any snippet below.
 
-| Concern | SDK 55 | SDK 56 and later |
-|---|---|---|
-| Root layout HOC | `AppMetricsRoot.wrap(...)` | `ObserveRoot.wrap(...)` |
+| Concern                 | SDK 55                                 | SDK 56 and later                                 |
+| ----------------------- | -------------------------------------- | ------------------------------------------------ |
+| Root layout HOC         | `AppMetricsRoot.wrap(...)`             | `ObserveRoot.wrap(...)`                          |
 | `markInteractive()` API | Global: `AppMetrics.markInteractive()` | Hook: `const { markInteractive } = useObserve()` |
-| Import source | `expo-observe` | `expo-observe` (same package) |
+| Import source           | `expo-observe`                         | `expo-observe` (same package)                    |
 
 Everything else — package name, build process, dashboard, debug-mode behavior — is the same across versions.
 

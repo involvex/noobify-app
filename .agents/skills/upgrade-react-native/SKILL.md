@@ -24,6 +24,7 @@ curl -s "https://raw.githubusercontent.com/react-native-community/rn-diff-purge/
 ```
 
 For binary files (e.g., gradle-wrapper.jar):
+
 ```
 https://raw.githubusercontent.com/react-native-community/rn-diff-purge/release/{version}/RnDiffApp/android/gradle/wrapper/gradle-wrapper.jar
 ```
@@ -51,6 +52,7 @@ cd example && npm install
 ```
 
 For iOS:
+
 ```bash
 cd example/ios && pod install
 ```
@@ -58,6 +60,7 @@ cd example/ios && pod install
 ### 7. Validate
 
 Rebuild native apps from root directory:
+
 ```bash
 npm run build:ios
 npm run build:android

@@ -125,14 +125,14 @@ The APK will be at `android/app/build/outputs/apk/release/`
 
 ## Theme Colors (Halo Dark)
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| Background | `#0A0B0F` | App background |
-| Surface | `#141720` | Cards, dialogs |
-| Primary | `#5B6BFF` | Buttons, links, accents |
-| Secondary | `#8B9FFF` | Secondary actions |
-| Text Primary | `#FFFFFF` | Main text |
-| Text Secondary | `#A0A6B8` | Subtitles, hints |
+| Token          | Hex       | Usage                   |
+| -------------- | --------- | ----------------------- |
+| Background     | `#0A0B0F` | App background          |
+| Surface        | `#141720` | Cards, dialogs          |
+| Primary        | `#5B6BFF` | Buttons, links, accents |
+| Secondary      | `#8B9FFF` | Secondary actions       |
+| Text Primary   | `#FFFFFF` | Main text               |
+| Text Secondary | `#A0A6B8` | Subtitles, hints        |
 
 ## Development
 
@@ -150,14 +150,17 @@ bun run format
 ## Troubleshooting
 
 ### Metro bundler shows wa-sqlite.wasm error
+
 This is expected for web bundling. The `metro.config.js` blocks these files for Android/iOS builds. Run the app on a device/emulator instead.
 
 ### Model download fails
+
 - Check internet connection
 - Ensure sufficient storage space (~400MB)
 - The download can be retried from the app's error state
 
 ### Build is slow
+
 llama.rn compiles C++ native binaries on first build. Subsequent builds are faster with Gradle cache.
 
 ## License

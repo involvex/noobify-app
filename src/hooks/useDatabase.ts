@@ -57,3 +57,98 @@ export async function deleteHistoryItem(id: number): Promise<void> {
   const database = await getDatabase();
   await database.runAsync('DELETE FROM history WHERE id = ?', [id]);
 }
+
+export interface CustomSkill {
+  id: number;
+  name: string;
+  aliases: string | null;
+  category: string;
+  what_it_is: string;
+  analogy: string;
+  key_traits: string | null;
+  common_comparisons: string | null;
+  created_at: number;
+  updated_at: number;
+}
+
+export interface SkillOverride {
+  id: number;
+  term_name: string;
+  enabled: number;
+}
+
+export async function addCustomSkill(
+  skill: Omit<CustomSkill, 'id' | 'created_at' | 'updated_at'>,
+): Promise<void> {
+  const database = await getDatabase();
+  const timestamp = Date.now();
+  await database.runAsync(
+    'INSERT OR REPLACE INTO custom_skills (name, aliases, category, what_it_is, analogy, key_traits, common_comparisons, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [
+      skill.name,
+      skill.aliases,
+      skill.category,
+      skill.what_it_is,
+      skill.analogy,
+      skill.key_traits,
+      skill.common_comparisons,
+      timestamp,
+      timestamp,
+    ],
+  );
+}
+
+export async function getCustomSkills(): Promise<CustomSkill[]> {
+  const database = await getDatabase();
+  return await database.getAllAsync<CustomSkill>('SELECT * FROM custom_skills ORDER BY name ASC');
+}
+
+export async function deleteCustomSkill(name: string): Promise<void> {
+  const database = await getDatabase();
+  await database.runAsync('DELETE FROM custom_skills WHERE name = ?', [name]);
+}
+
+export async function getSkillOverrides(): Promise<SkillOverride[]> {
+  const database = await getDatabase();
+  return await database.getAllAsync<SkillOverride>('SELECT * FROM skill_overrides');
+}
+
+export async function setSkillOverride(termName: string, enabled: boolean): Promise<void> {
+  const database = await getDatabase();
+  await database.runAsync(
+    'INSERT OR REPLACE INTO skill_overrides (term_name, enabled) VALUES (?, ?)',
+    [termName, enabled ? 1 : 0],
+  );
+}
+
+export async function deleteSkillOverride(termName: string): Promise<void> {
+  const database = await getDatabase();
+  await database.runAsync('DELETE FROM skill_overrides WHERE term_name = ?', [termName]);
+}
+
+export async function exportCustomSkills(): Promise<CustomSkill[]> {
+  return getCustomSkills();
+}
+
+export async function importCustomSkills(
+  skills: Omit<CustomSkill, 'id' | 'created_at' | 'updated_at'>[],
+): Promise<void> {
+  const database = await getDatabase();
+  const timestamp = Date.now();
+  for (const skill of skills) {
+    await database.runAsync(
+      'INSERT OR REPLACE INTO custom_skills (name, aliases, category, what_it_is, analogy, key_traits, common_comparisons, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [
+        skill.name,
+        skill.aliases,
+        skill.category,
+        skill.what_it_is,
+        skill.analogy,
+        skill.key_traits,
+        skill.common_comparisons,
+        timestamp,
+        timestamp,
+      ],
+    );
+  }
+}

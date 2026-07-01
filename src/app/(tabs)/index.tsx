@@ -16,6 +16,46 @@ import { haloColors } from '@/constants/haloTheme';
 import { useLocalLLM, type Language } from '@/hooks/useLocalLLM';
 import { addHistoryItem } from '@/hooks/useDatabase';
 
+const CATEGORY_LABELS: Record<string, { en: string; de: string }> = {
+  'web-dev': { en: 'Web Development', de: 'Webentwicklung' },
+  programming: { en: 'Programming', de: 'Programmierung' },
+  devops: { en: 'DevOps & Tools', de: 'DevOps & Werkzeuge' },
+  'ai-data': { en: 'AI & Data', de: 'KI & Daten' },
+};
+
+function SkillBadge({ category, language }: { category: string | null; language: Language }) {
+  if (!category) return null;
+  const labels = CATEGORY_LABELS[category] ?? { en: category, de: category };
+  return (
+    <View style={badgeStyles.container}>
+      <View style={badgeStyles.dot} />
+      <Text style={badgeStyles.text}>{labels[language]}</Text>
+    </View>
+  );
+}
+
+const badgeStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 12,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: haloColors.success,
+  },
+  text: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: haloColors.success,
+    textTransform: 'uppercase',
+    letterSpacing: 0.08,
+  },
+});
+
 function LanguageToggle({
   language,
   onToggle,
@@ -81,6 +121,8 @@ export default function TranslatorScreen() {
     generationState,
     generatedText,
     error,
+    matchedTerm,
+    termCategory,
     generateAnalogy,
     retryDownload,
   } = useLocalLLM();
@@ -230,10 +272,22 @@ export default function TranslatorScreen() {
         {hasGenerated && generatedText && (
           <Card style={styles.resultCard}>
             <Card.Content>
+              <SkillBadge category={termCategory} language={language} />
               <Text style={styles.resultLabel}>
                 {language === 'en' ? 'Your analogy:' : 'Deine Analogie:'}
               </Text>
               <Text style={styles.resultText}>{generatedText}</Text>
+              {matchedTerm && (
+                <View style={styles.termInfo}>
+                  <Text style={styles.termName}>{matchedTerm.name}</Text>
+                  {matchedTerm.keyTraits.length > 0 && (
+                    <Text style={styles.termTraits}>
+                      {language === 'en' ? 'Key traits: ' : 'Merkmale: '}
+                      {matchedTerm.keyTraits.join(', ')}
+                    </Text>
+                  )}
+                </View>
+              )}
             </Card.Content>
             <Card.Actions style={styles.cardActions}>
               <Button mode="text" onPress={handleShare} icon="share" textColor={haloColors.primary}>
@@ -395,5 +449,21 @@ const styles = StyleSheet.create({
   errorCardText: {
     fontSize: 14,
     color: haloColors.error,
+  },
+  termInfo: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: haloColors.border,
+  },
+  termName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: haloColors.primary,
+    marginBottom: 4,
+  },
+  termTraits: {
+    fontSize: 12,
+    color: haloColors.onSurfaceMuted,
   },
 });

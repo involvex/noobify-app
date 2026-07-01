@@ -7,6 +7,7 @@ function TabIcon({ name, focused }: { name: string; focused: boolean }) {
   const icons: Record<string, string> = {
     index: focused ? '✨' : '💡',
     history: focused ? '📜' : '📋',
+    skills: focused ? '🧠' : '📚',
   };
 
   return (
@@ -73,6 +74,15 @@ export default function TabLayout() {
           headerTitle: 'History',
           tabBarLabel: 'History',
           tabBarIcon: ({ focused }) => <TabIcon name="history" focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
+        name="skills"
+        options={{
+          title: 'Skills',
+          headerTitle: 'Skill Manager',
+          tabBarLabel: 'Skills',
+          tabBarIcon: ({ focused }) => <TabIcon name="skills" focused={focused} />,
         }}
       />
     </Tabs>

@@ -17,6 +17,25 @@ async function initDatabase(db: SQLiteDatabase): Promise<void> {
       language TEXT NOT NULL,
       timestamp INTEGER NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS custom_skills (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE,
+      aliases TEXT,
+      category TEXT NOT NULL DEFAULT 'custom',
+      what_it_is TEXT NOT NULL,
+      analogy TEXT NOT NULL,
+      key_traits TEXT,
+      common_comparisons TEXT,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS skill_overrides (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      term_name TEXT NOT NULL UNIQUE,
+      enabled INTEGER NOT NULL DEFAULT 1
+    );
   `);
 }
 
