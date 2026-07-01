@@ -1,0 +1,9 @@
+node_modules/
+.expo/
+android/
+ios/
+dist/
+*.config.js
+scripts/
+package-lock.json
+bun.lock
