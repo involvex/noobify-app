@@ -5,7 +5,17 @@ export interface HistoryItem {
   original_term: string;
   analogy: string;
   language: string;
+  category: string | null;
   timestamp: number;
+}
+
+export interface FavoriteItem {
+  id: number;
+  original_term: string;
+  analogy: string;
+  language: string;
+  category: string | null;
+  created_at: number;
 }
 
 const DB_NAME = 'noobify.db';
@@ -31,12 +41,13 @@ export async function addHistoryItem(
   originalTerm: string,
   analogy: string,
   language: string,
+  category?: string,
 ): Promise<void> {
   const database = await getDatabase();
   const timestamp = Date.now();
   await database.runAsync(
-    'INSERT INTO history (original_term, analogy, language, timestamp) VALUES (?, ?, ?, ?)',
-    [originalTerm, analogy, language, timestamp],
+    'INSERT INTO history (original_term, analogy, language, category, timestamp) VALUES (?, ?, ?, ?, ?)',
+    [originalTerm, analogy, language, category || null, timestamp],
   );
 }
 
@@ -151,4 +162,39 @@ export async function importCustomSkills(
       ],
     );
   }
+}
+
+export async function addFavorite(
+  originalTerm: string,
+  analogy: string,
+  language: string,
+  category: string | null,
+): Promise<void> {
+  const database = await getDatabase();
+  const timestamp = Date.now();
+  await database.runAsync(
+    'INSERT INTO favorites (original_term, analogy, language, category, created_at) VALUES (?, ?, ?, ?, ?)',
+    [originalTerm, analogy, language, category, timestamp],
+  );
+}
+
+export async function getFavorites(): Promise<FavoriteItem[]> {
+  const database = await getDatabase();
+  return await database.getAllAsync<FavoriteItem>(
+    'SELECT * FROM favorites ORDER BY created_at DESC',
+  );
+}
+
+export async function removeFavorite(id: number): Promise<void> {
+  const database = await getDatabase();
+  await database.runAsync('DELETE FROM favorites WHERE id = ?', [id]);
+}
+
+export async function isFavorite(originalTerm: string): Promise<boolean> {
+  const database = await getDatabase();
+  const result = await database.getFirstAsync<{ count: number }>(
+    'SELECT COUNT(*) as count FROM favorites WHERE original_term = ?',
+    [originalTerm],
+  );
+  return (result?.count ?? 0) > 0;
 }

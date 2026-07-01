@@ -11,8 +11,9 @@ import {
   Surface,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Clipboard from 'expo-clipboard';
 
-import { haloColors } from '@/constants/haloTheme';
+import { useThemeContext } from '@/constants/themes';
 import { useLocalLLM, type Language } from '@/hooks/useLocalLLM';
 import { addHistoryItem } from '@/hooks/useDatabase';
 
@@ -23,13 +24,21 @@ const CATEGORY_LABELS: Record<string, { en: string; de: string }> = {
   'ai-data': { en: 'AI & Data', de: 'KI & Daten' },
 };
 
-function SkillBadge({ category, language }: { category: string | null; language: Language }) {
+function SkillBadge({
+  category,
+  language,
+  colors,
+}: {
+  category: string | null;
+  language: Language;
+  colors: Record<string, string>;
+}) {
   if (!category) return null;
   const labels = CATEGORY_LABELS[category] ?? { en: category, de: category };
   return (
     <View style={badgeStyles.container}>
-      <View style={badgeStyles.dot} />
-      <Text style={badgeStyles.text}>{labels[language]}</Text>
+      <View style={[badgeStyles.dot, { backgroundColor: colors.success }]} />
+      <Text style={[badgeStyles.text, { color: colors.success }]}>{labels[language]}</Text>
     </View>
   );
 }
@@ -45,12 +54,10 @@ const badgeStyles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: haloColors.success,
   },
   text: {
     fontSize: 12,
     fontWeight: '500',
-    color: haloColors.success,
     textTransform: 'uppercase',
     letterSpacing: 0.08,
   },
@@ -59,25 +66,43 @@ const badgeStyles = StyleSheet.create({
 function LanguageToggle({
   language,
   onToggle,
+  colors,
 }: {
   language: Language;
   onToggle: (lang: Language) => void;
+  colors: Record<string, string>;
 }) {
   return (
     <View style={toggleStyles.container}>
       <Chip
         selected={language === 'en'}
         onPress={() => onToggle('en')}
-        style={[toggleStyles.chip, language === 'en' && toggleStyles.chipSelected]}
-        textStyle={[toggleStyles.chipText, language === 'en' && toggleStyles.chipTextSelected]}
+        style={[
+          toggleStyles.chip,
+          { backgroundColor: colors.surface, borderColor: colors.border },
+          language === 'en' && { backgroundColor: colors.primary, borderColor: colors.primary },
+        ]}
+        textStyle={[
+          toggleStyles.chipText,
+          { color: colors.onSurfaceMuted },
+          language === 'en' && { color: '#FFFFFF' },
+        ]}
         mode="flat">
         🇬🇧 English
       </Chip>
       <Chip
         selected={language === 'de'}
         onPress={() => onToggle('de')}
-        style={[toggleStyles.chip, language === 'de' && toggleStyles.chipSelected]}
-        textStyle={[toggleStyles.chipText, language === 'de' && toggleStyles.chipTextSelected]}
+        style={[
+          toggleStyles.chip,
+          { backgroundColor: colors.surface, borderColor: colors.border },
+          language === 'de' && { backgroundColor: colors.primary, borderColor: colors.primary },
+        ]}
+        textStyle={[
+          toggleStyles.chipText,
+          { color: colors.onSurfaceMuted },
+          language === 'de' && { color: '#FFFFFF' },
+        ]}
         mode="flat">
         🇩🇪 Deutsch
       </Chip>
@@ -92,16 +117,10 @@ const toggleStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   chip: {
-    backgroundColor: haloColors.surface,
     borderWidth: 1,
-    borderColor: haloColors.border,
   },
-  chipSelected: {
-    backgroundColor: haloColors.primary,
-    borderColor: haloColors.primary,
-  },
+  chipSelected: {},
   chipText: {
-    color: haloColors.onSurfaceMuted,
     fontSize: 14,
   },
   chipTextSelected: {
@@ -113,6 +132,7 @@ export default function TranslatorScreen() {
   const [inputTerm, setInputTerm] = useState('');
   const [language, setLanguage] = useState<Language>('en');
   const [hasGenerated, setHasGenerated] = useState(false);
+  const { colors } = useThemeContext();
 
   const {
     downloadState,
@@ -133,9 +153,9 @@ export default function TranslatorScreen() {
     const result = await generateAnalogy(inputTerm.trim(), language);
     if (result) {
       setHasGenerated(true);
-      await addHistoryItem(inputTerm.trim(), result, language);
+      await addHistoryItem(inputTerm.trim(), result, language, termCategory || undefined);
     }
-  }, [inputTerm, language, generateAnalogy]);
+  }, [inputTerm, language, generateAnalogy, termCategory]);
 
   const handleShare = useCallback(async () => {
     if (!generatedText) return;
@@ -155,6 +175,15 @@ export default function TranslatorScreen() {
     }
   }, [generatedText, inputTerm, language]);
 
+  const handleCopy = useCallback(async () => {
+    if (!generatedText) return;
+
+    const copyText =
+      language === 'en' ? `${inputTerm}: ${generatedText}` : `${inputTerm}: ${generatedText}`;
+
+    await Clipboard.setStringAsync(copyText);
+  }, [generatedText, inputTerm, language]);
+
   const handleClear = useCallback(() => {
     setInputTerm('');
     setHasGenerated(false);
@@ -164,8 +193,8 @@ export default function TranslatorScreen() {
     if (downloadState === 'checking' || downloadState === 'downloading') {
       return (
         <View style={styles.statusContainer}>
-          <ActivityIndicator size="large" color={haloColors.primary} />
-          <Text style={styles.statusText}>
+          <ActivityIndicator size="large" color={colors.primary} />
+          <Text style={[styles.statusText, { color: colors.onSurfaceMuted }]}>
             {downloadState === 'checking'
               ? language === 'en'
                 ? 'Checking model...'
@@ -176,10 +205,12 @@ export default function TranslatorScreen() {
           </Text>
           <ProgressBar
             progress={downloadProgress / 100}
-            color={haloColors.primary}
-            style={styles.progressBar}
+            color={colors.primary}
+            style={[styles.progressBar, { backgroundColor: colors.surface }]}
           />
-          <Text style={styles.progressText}>{downloadProgress}%</Text>
+          <Text style={[styles.progressText, { color: colors.onSurfaceFaint }]}>
+            {downloadProgress}%
+          </Text>
         </View>
       );
     }
@@ -187,7 +218,7 @@ export default function TranslatorScreen() {
     if (downloadState === 'error') {
       return (
         <View style={styles.statusContainer}>
-          <Text style={styles.errorText}>{error}</Text>
+          <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
           <Button mode="contained" onPress={retryDownload} style={styles.retryButton}>
             {language === 'en' ? 'Retry Download' : 'Erneut versuchen'}
           </Button>
@@ -198,8 +229,8 @@ export default function TranslatorScreen() {
     if (initState === 'initializing') {
       return (
         <View style={styles.statusContainer}>
-          <ActivityIndicator size="large" color={haloColors.primary} />
-          <Text style={styles.statusText}>
+          <ActivityIndicator size="large" color={colors.primary} />
+          <Text style={[styles.statusText, { color: colors.onSurfaceMuted }]}>
             {language === 'en' ? 'Initializing AI model...' : 'Initialisiere KI-Modell...'}
           </Text>
         </View>
@@ -209,15 +240,19 @@ export default function TranslatorScreen() {
     if (initState === 'error') {
       return (
         <View style={styles.statusContainer}>
-          <Text style={styles.errorText}>{error}</Text>
+          <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
         </View>
       );
     }
 
     return (
       <>
-        <Surface style={styles.inputSurface}>
-          <LanguageToggle language={language} onToggle={setLanguage} />
+        <Surface
+          style={[
+            styles.inputSurface,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}>
+          <LanguageToggle language={language} onToggle={setLanguage} colors={colors} />
 
           <TextInput
             mode="flat"
@@ -229,11 +264,11 @@ export default function TranslatorScreen() {
             }
             value={inputTerm}
             onChangeText={setInputTerm}
-            style={styles.input}
-            contentStyle={styles.inputContent}
-            textColor={haloColors.onSurface}
-            underlineColor={haloColors.border}
-            activeUnderlineColor={haloColors.primary}
+            style={[styles.input, { backgroundColor: colors.surface }]}
+            contentStyle={[styles.inputContent, { color: colors.onSurface }]}
+            textColor={colors.onSurface}
+            underlineColor={colors.border}
+            activeUnderlineColor={colors.primary}
             returnKeyType="send"
             onSubmitEditing={handleSubmit}
             disabled={generationState === 'generating'}
@@ -244,8 +279,8 @@ export default function TranslatorScreen() {
               <Button
                 mode="outlined"
                 onPress={handleClear}
-                style={styles.clearButton}
-                textColor={haloColors.onSurfaceMuted}>
+                style={[styles.clearButton, { borderColor: colors.border }]}
+                textColor={colors.onSurfaceMuted}>
                 {language === 'en' ? 'Clear' : 'Löschen'}
               </Button>
             )}
@@ -253,7 +288,7 @@ export default function TranslatorScreen() {
               mode="contained"
               onPress={handleSubmit}
               style={styles.submitButton}
-              buttonColor={haloColors.primary}
+              buttonColor={colors.primary}
               loading={generationState === 'generating'}
               disabled={
                 !inputTerm.trim() || generationState === 'generating' || initState !== 'ready'
@@ -270,18 +305,24 @@ export default function TranslatorScreen() {
         </Surface>
 
         {hasGenerated && generatedText && (
-          <Card style={styles.resultCard}>
+          <Card
+            style={[
+              styles.resultCard,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+            ]}>
             <Card.Content>
-              <SkillBadge category={termCategory} language={language} />
-              <Text style={styles.resultLabel}>
+              <SkillBadge category={termCategory} language={language} colors={colors} />
+              <Text style={[styles.resultLabel, { color: colors.onSurfaceMuted }]}>
                 {language === 'en' ? 'Your analogy:' : 'Deine Analogie:'}
               </Text>
-              <Text style={styles.resultText}>{generatedText}</Text>
+              <Text style={[styles.resultText, { color: colors.onSurface }]}>{generatedText}</Text>
               {matchedTerm && (
-                <View style={styles.termInfo}>
-                  <Text style={styles.termName}>{matchedTerm.name}</Text>
+                <View style={[styles.termInfo, { borderTopColor: colors.border }]}>
+                  <Text style={[styles.termName, { color: colors.primary }]}>
+                    {matchedTerm.name}
+                  </Text>
                   {matchedTerm.keyTraits.length > 0 && (
-                    <Text style={styles.termTraits}>
+                    <Text style={[styles.termTraits, { color: colors.onSurfaceMuted }]}>
                       {language === 'en' ? 'Key traits: ' : 'Merkmale: '}
                       {matchedTerm.keyTraits.join(', ')}
                     </Text>
@@ -290,7 +331,14 @@ export default function TranslatorScreen() {
               )}
             </Card.Content>
             <Card.Actions style={styles.cardActions}>
-              <Button mode="text" onPress={handleShare} icon="share" textColor={haloColors.primary}>
+              <Button
+                mode="text"
+                onPress={handleCopy}
+                icon="content-copy"
+                textColor={colors.onSurfaceMuted}>
+                {language === 'en' ? 'Copy' : 'Kopieren'}
+              </Button>
+              <Button mode="text" onPress={handleShare} icon="share" textColor={colors.primary}>
                 {language === 'en' ? 'Share' : 'Teilen'}
               </Button>
             </Card.Actions>
@@ -298,9 +346,9 @@ export default function TranslatorScreen() {
         )}
 
         {generationState === 'error' && (
-          <Card style={[styles.resultCard, styles.errorCard]}>
+          <Card style={[styles.resultCard, styles.errorCard, { borderColor: colors.error }]}>
             <Card.Content>
-              <Text style={styles.errorCardText}>{error}</Text>
+              <Text style={[styles.errorCardText, { color: colors.error }]}>{error}</Text>
             </Card.Content>
           </Card>
         )}
@@ -309,16 +357,18 @@ export default function TranslatorScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+      edges={['bottom']}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
-          <Text style={styles.title}>
+          <Text style={[styles.title, { color: colors.onSurface }]}>
             {language === 'en' ? 'Explain it simply 💡' : 'Erkläre es einfach 💡'}
           </Text>
-          <Text style={styles.subtitle}>
+          <Text style={[styles.subtitle, { color: colors.onSurfaceMuted }]}>
             {language === 'en'
               ? 'Enter any tech term and get an everyday analogy'
               : 'Gib einen beliebigen Fachbegriff ein und erhalte eine alltägliche Analogie'}
@@ -334,7 +384,6 @@ export default function TranslatorScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: haloColors.background,
   },
   scrollView: {
     flex: 1,
@@ -350,31 +399,24 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    color: haloColors.onSurface,
     textAlign: 'center',
     letterSpacing: -0.02,
   },
   subtitle: {
     fontSize: 14,
-    color: haloColors.onSurfaceMuted,
     textAlign: 'center',
     marginTop: 8,
   },
   inputSurface: {
-    backgroundColor: haloColors.surface,
     borderRadius: 16,
     padding: 20,
     borderWidth: 1,
-    borderColor: haloColors.border,
     gap: 16,
   },
   input: {
-    backgroundColor: haloColors.surface,
     fontSize: 16,
   },
-  inputContent: {
-    color: haloColors.onSurface,
-  },
+  inputContent: {},
   buttonRow: {
     flexDirection: 'row',
     gap: 12,
@@ -382,29 +424,24 @@ const styles = StyleSheet.create({
   },
   clearButton: {
     flex: 1,
-    borderColor: haloColors.border,
   },
   submitButton: {
     flex: 2,
   },
   resultCard: {
     marginTop: 20,
-    backgroundColor: haloColors.surface,
     borderWidth: 1,
-    borderColor: haloColors.border,
     borderRadius: 16,
   },
   resultLabel: {
     fontSize: 12,
     fontWeight: '500',
-    color: haloColors.onSurfaceMuted,
     textTransform: 'uppercase',
     letterSpacing: 0.08,
     marginBottom: 8,
   },
   resultText: {
     fontSize: 16,
-    color: haloColors.onSurface,
     lineHeight: 24,
   },
   cardActions: {
@@ -419,23 +456,19 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 16,
-    color: haloColors.onSurfaceMuted,
     textAlign: 'center',
   },
   progressBar: {
     width: '80%',
     height: 6,
     borderRadius: 3,
-    backgroundColor: haloColors.surface,
   },
   progressText: {
     fontSize: 14,
-    color: haloColors.onSurfaceFaint,
     fontFamily: 'monospace',
   },
   errorText: {
     fontSize: 14,
-    color: haloColors.error,
     textAlign: 'center',
     paddingHorizontal: 20,
   },
@@ -443,27 +476,22 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   errorCard: {
-    borderColor: haloColors.error,
     marginTop: 20,
   },
   errorCardText: {
     fontSize: 14,
-    color: haloColors.error,
   },
   termInfo: {
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: haloColors.border,
   },
   termName: {
     fontSize: 14,
     fontWeight: '600',
-    color: haloColors.primary,
     marginBottom: 4,
   },
   termTraits: {
     fontSize: 12,
-    color: haloColors.onSurfaceMuted,
   },
 });

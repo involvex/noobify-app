@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { Text, TextInput, IconButton, ActivityIndicator, FAB } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { haloColors } from '@/constants/haloTheme';
+import { useThemeContext } from '@/constants/themes';
 import { useSkills, type ManagedSkill } from '@/hooks/useSkills';
 import { SkillCard } from '@/components/SkillCard';
 import { SkillDetailModal } from '@/components/SkillDetailModal';
@@ -85,6 +85,7 @@ export default function SkillsScreen() {
     enabledTerms,
     customCount,
   } = useSkills();
+  const { colors } = useThemeContext();
 
   const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
   const [detailModal, setDetailModal] = useState<{
@@ -133,35 +134,45 @@ export default function SkillsScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+      <SafeAreaView
+        style={[styles.safeArea, { backgroundColor: colors.background }]}
+        edges={['bottom']}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={haloColors.primary} />
-          <Text style={styles.loadingText}>Loading skills...</Text>
+          <ActivityIndicator size="large" color={colors.primary} />
+          <Text style={[styles.loadingText, { color: colors.onSurfaceMuted }]}>
+            Loading skills...
+          </Text>
         </View>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+      edges={['bottom']}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.statsRow}>
+        <View
+          style={[
+            styles.statsRow,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>{totalTerms}</Text>
-            <Text style={styles.statLabel}>Total</Text>
+            <Text style={[styles.statValue, { color: colors.onSurface }]}>{totalTerms}</Text>
+            <Text style={[styles.statLabel, { color: colors.onSurfaceMuted }]}>Total</Text>
           </View>
-          <View style={styles.statDivider} />
+          <View style={[styles.statDivider, { backgroundColor: colors.border }]} />
           <View style={styles.statItem}>
-            <Text style={[styles.statValue, { color: haloColors.success }]}>{enabledTerms}</Text>
-            <Text style={styles.statLabel}>Active</Text>
+            <Text style={[styles.statValue, { color: colors.success }]}>{enabledTerms}</Text>
+            <Text style={[styles.statLabel, { color: colors.onSurfaceMuted }]}>Active</Text>
           </View>
-          <View style={styles.statDivider} />
+          <View style={[styles.statDivider, { backgroundColor: colors.border }]} />
           <View style={styles.statItem}>
-            <Text style={[styles.statValue, { color: haloColors.primary }]}>{customCount}</Text>
-            <Text style={styles.statLabel}>Custom</Text>
+            <Text style={[styles.statValue, { color: colors.primary }]}>{customCount}</Text>
+            <Text style={[styles.statLabel, { color: colors.onSurfaceMuted }]}>Custom</Text>
           </View>
         </View>
 
@@ -169,27 +180,27 @@ export default function SkillsScreen() {
           <TextInput
             mode="flat"
             placeholder="Search skills..."
-            placeholderTextColor={haloColors.onSurfaceFaint}
+            placeholderTextColor={colors.onSurfaceFaint}
             value={searchQuery}
             onChangeText={setSearchQuery}
-            style={styles.searchInput}
-            contentStyle={styles.searchContent}
-            textColor={haloColors.onSurface}
-            underlineColor={haloColors.border}
-            activeUnderlineColor={haloColors.primary}
-            left={<TextInput.Icon icon="magnify" color={haloColors.onSurfaceMuted} />}
+            style={[styles.searchInput, { backgroundColor: colors.surface }]}
+            contentStyle={[styles.searchContent, { color: colors.onSurface }]}
+            textColor={colors.onSurface}
+            underlineColor={colors.border}
+            activeUnderlineColor={colors.primary}
+            left={<TextInput.Icon icon="magnify" color={colors.onSurfaceMuted} />}
           />
           <IconButton
             icon="tray-arrow-down"
             size={24}
-            iconColor={haloColors.primary}
+            iconColor={colors.primary}
             onPress={() => setImportModalVisible(true)}
             style={styles.importButton}
           />
           <IconButton
             icon="tray-arrow-up"
             size={24}
-            iconColor={haloColors.secondary}
+            iconColor={colors.secondary}
             onPress={handleExportPress}
             style={styles.exportButton}
           />
@@ -211,8 +222,8 @@ export default function SkillsScreen() {
         {categories.length === 0 && (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyIcon}>🔍</Text>
-            <Text style={styles.emptyTitle}>No skills found</Text>
-            <Text style={styles.emptySubtitle}>
+            <Text style={[styles.emptyTitle, { color: colors.onSurface }]}>No skills found</Text>
+            <Text style={[styles.emptySubtitle, { color: colors.onSurfaceMuted }]}>
               {searchQuery ? 'Try a different search term' : 'Add custom skills to get started'}
             </Text>
           </View>
@@ -268,7 +279,6 @@ export default function SkillsScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: haloColors.background,
   },
   loadingContainer: {
     flex: 1,
@@ -278,7 +288,6 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 14,
-    color: haloColors.onSurfaceMuted,
   },
   scrollView: {
     flex: 1,
@@ -291,12 +300,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: haloColors.surface,
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: haloColors.border,
   },
   statItem: {
     alignItems: 'center',
@@ -305,17 +312,14 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 24,
     fontWeight: '700',
-    color: haloColors.onSurface,
   },
   statLabel: {
     fontSize: 12,
-    color: haloColors.onSurfaceMuted,
     marginTop: 2,
   },
   statDivider: {
     width: 1,
     height: 32,
-    backgroundColor: haloColors.border,
   },
   searchRow: {
     flexDirection: 'row',
@@ -325,16 +329,13 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    backgroundColor: haloColors.surface,
   },
-  searchContent: {
-    color: haloColors.onSurface,
-  },
+  searchContent: {},
   importButton: {
-    backgroundColor: haloColors.elevated,
+    backgroundColor: 'rgba(30, 32, 41, 1)',
   },
   exportButton: {
-    backgroundColor: haloColors.elevated,
+    backgroundColor: 'rgba(30, 32, 41, 1)',
   },
   categorySection: {
     marginBottom: 16,
@@ -343,11 +344,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: haloColors.surface,
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: haloColors.border,
   },
   categoryHeaderLeft: {
     flexDirection: 'row',
@@ -361,17 +360,14 @@ const styles = StyleSheet.create({
   categoryLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: haloColors.onSurface,
     flex: 1,
   },
   categoryCount: {
     fontSize: 13,
-    color: haloColors.onSurfaceMuted,
     fontWeight: '500',
   },
   collapseIcon: {
     fontSize: 12,
-    color: haloColors.onSurfaceMuted,
   },
   termsList: {
     marginTop: 8,
@@ -389,19 +385,16 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: haloColors.onSurface,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 14,
-    color: haloColors.onSurfaceMuted,
     textAlign: 'center',
   },
   fab: {
     position: 'absolute',
     right: 20,
     bottom: 20,
-    backgroundColor: haloColors.primary,
     borderRadius: 16,
   },
 });
