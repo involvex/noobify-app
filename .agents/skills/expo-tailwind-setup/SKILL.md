@@ -142,8 +142,8 @@ import {
 	TextInput as RNTextInput,
 	StyleSheet,
 } from 'react-native'
-import {Link as RouterLink} from 'expo-router'
 import Animated from 'react-native-reanimated'
+import {Link as RouterLink} from 'expo-router'
 import React from 'react'
 
 // CSS-enabled Link
@@ -252,8 +252,8 @@ TouchableHighlight.displayName = 'CSS(TouchableHighlight)'
 ### Image Component (`src/tw/image.tsx`)
 
 ```tsx
-import {useCssElement} from 'react-native-css'
 import Animated from 'react-native-reanimated'
+import {useCssElement} from 'react-native-css'
 import {Image as RNImage} from 'expo-image'
 import {StyleSheet} from 'react-native'
 import React from 'react'

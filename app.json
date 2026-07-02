@@ -49,7 +49,7 @@
 			"expo-status-bar",
 			"expo-web-browser",
 			[
-				"@react-native-voice/voice",
+				"expo-speech-recognition",
 				{
 					"microphonePermission": "Allow Noobify to access your microphone for speech-to-text.",
 					"speechRecognitionPermission": "Allow Noobify to recognize your speech."

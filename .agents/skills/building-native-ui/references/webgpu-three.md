@@ -426,8 +426,8 @@ function Particles({count = 500}) {
 See the full `orbit-controls.tsx` implementation in the lib files. Usage:
 
 ```tsx
-import {FiberCanvas} from '@/lib/fiber-canvas'
 import useControls from '@/lib/orbit-controls'
+import {FiberCanvas} from '@/lib/fiber-canvas'
 import {View} from 'react-native'
 
 function Scene() {

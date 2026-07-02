@@ -18,8 +18,8 @@ import * as ImagePicker from 'expo-image-picker'
 import React, {useRef, useState} from 'react'
 import {GlassView} from 'expo-glass-effect'
 import {SymbolView} from 'expo-symbols'
-import {colors} from '@/theme/colors'
 import * as Haptics from 'expo-haptics'
+import {colors} from '@/theme/colors'
 
 function Camera({onPicture}: {onPicture: (uri: string) => Promise<void>}) {
 	const [permission, requestPermission] = useCameraPermissions()
