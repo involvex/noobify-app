@@ -58,6 +58,15 @@ async function initDatabase(db: SQLiteDatabase): Promise<void> {
       key TEXT PRIMARY KEY,
       value TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS user_profile (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      field_key TEXT NOT NULL UNIQUE,
+      field_label TEXT NOT NULL,
+      field_value TEXT NOT NULL,
+      enabled INTEGER NOT NULL DEFAULT 1,
+      sort_order INTEGER NOT NULL DEFAULT 0
+    );
   `)
 
 	// Migrate: add category column to history if missing

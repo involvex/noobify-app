@@ -8,6 +8,7 @@ function TabIcon({name, focused}: {name: string; focused: boolean}) {
 		index: focused ? '✨' : '💡',
 		history: focused ? '📜' : '📋',
 		skills: focused ? '🧠' : '📚',
+		about: focused ? '👤' : '🧑',
 	}
 
 	return (
@@ -108,6 +109,20 @@ export default function TabLayout() {
 					tabBarIcon: ({focused}) => (
 						<TabIcon
 							name="skills"
+							focused={focused}
+						/>
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="about"
+				options={{
+					title: 'About Me',
+					headerTitle: 'About Me',
+					tabBarLabel: 'About',
+					tabBarIcon: ({focused}) => (
+						<TabIcon
+							name="about"
 							focused={focused}
 						/>
 					),

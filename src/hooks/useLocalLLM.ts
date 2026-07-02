@@ -8,6 +8,7 @@ import {
 	buildMergedIndex,
 	getTermCategory,
 } from '@/skills/_index'
+import {buildProfileContext} from '@/hooks/useDatabase'
 import type {TermDefinition} from '@/skills/types'
 
 const MODEL_FILE_NAME = 'qwen2.5-0.5b-instruct-q4_k_m.gguf'
@@ -67,6 +68,7 @@ async function buildEnhancedPrompt(
 	term: string,
 	language: Language,
 	detailed: boolean = false,
+	profileContext: string = '',
 ): Promise<{
 	systemPrompt: string
 	userPrompt: string
@@ -76,6 +78,10 @@ async function buildEnhancedPrompt(
 	const index = await buildMergedIndex()
 	const matchedTerm = findTerm(term, index)
 	const category = matchedTerm ? getTermCategory(term, index) : null
+
+	const profileLine = profileContext
+		? `\nAbout the user: ${profileContext}`
+		: ''
 
 	if (!matchedTerm) {
 		const baseSystem = detailed
@@ -94,7 +100,7 @@ async function buildEnhancedPrompt(
 				: `Was ist ${term}? Erkläre es einfach.`
 
 		return {
-			systemPrompt: baseSystem,
+			systemPrompt: baseSystem + profileLine,
 			userPrompt,
 			matchedTerm: null,
 			category: null,
@@ -107,6 +113,7 @@ async function buildEnhancedPrompt(
 	if (language === 'en') {
 		systemPrompt = [
 			detailed ? EN_DETAILED_SYSTEM_PROMPT : EN_BASE_SYSTEM_PROMPT,
+			profileLine,
 			'',
 			'Context about this term (use for accuracy, do not copy):',
 			'',
@@ -115,6 +122,7 @@ async function buildEnhancedPrompt(
 	} else {
 		systemPrompt = [
 			detailed ? DE_DETAILED_SYSTEM_PROMPT : DE_BASE_SYSTEM_PROMPT,
+			profileLine,
 			'',
 			'Kontext über diesen Begriff (zur Genauigkeit verwenden, nicht kopieren):',
 			'',
@@ -223,8 +231,9 @@ export function useLocalLLM() {
 			}))
 
 			try {
+				const profileContext = await buildProfileContext()
 				const {systemPrompt, userPrompt, matchedTerm, category} =
-					await buildEnhancedPrompt(term, language, detailed)
+					await buildEnhancedPrompt(term, language, detailed, profileContext)
 
 				const stopWords = [
 					'</s>',
