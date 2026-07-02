@@ -206,6 +206,36 @@ export default function TranslatorScreen() {
 		setHasGenerated(false)
 	}, [])
 
+	const handleReroll = useCallback(async () => {
+		if (!inputTerm.trim()) return
+
+		const result = await generateAnalogy(inputTerm.trim(), language)
+		if (result) {
+			setHasGenerated(true)
+			await addHistoryItem(
+				inputTerm.trim(),
+				result,
+				language,
+				termCategory || undefined,
+			)
+		}
+	}, [inputTerm, language, generateAnalogy, termCategory])
+
+	const handleDetailed = useCallback(async () => {
+		if (!inputTerm.trim()) return
+
+		const result = await generateAnalogy(inputTerm.trim(), language, true)
+		if (result) {
+			setHasGenerated(true)
+			await addHistoryItem(
+				inputTerm.trim(),
+				result,
+				language,
+				termCategory || undefined,
+			)
+		}
+	}, [inputTerm, language, generateAnalogy, termCategory])
+
 	const renderContent = () => {
 		if (downloadState === 'checking' || downloadState === 'downloading') {
 			return (
@@ -404,6 +434,24 @@ export default function TranslatorScreen() {
 								textColor={colors.primary}
 							>
 								{language === 'en' ? 'Share' : 'Teilen'}
+							</Button>
+							<Button
+								mode="text"
+								onPress={handleReroll}
+								icon="refresh"
+								disabled={generationState === 'generating'}
+								textColor={colors.secondary}
+							>
+								{language === 'en' ? 'Reroll' : 'Neu generieren'}
+							</Button>
+							<Button
+								mode="text"
+								onPress={handleDetailed}
+								icon="text-box-plus"
+								disabled={generationState === 'generating'}
+								textColor={colors.tertiary}
+							>
+								{language === 'en' ? 'Detailed' : 'Detailliert'}
 							</Button>
 						</Card.Actions>
 					</Card>

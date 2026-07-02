@@ -17,8 +17,14 @@ const MODEL_URL =
 const EN_BASE_SYSTEM_PROMPT =
 	'You are a witty tech translator for beginners. Explain tech terms using everyday analogies (cooking, cars, sports, etc.). Keep it under 60 words. Be accurate and helpful.'
 
+const EN_DETAILED_SYSTEM_PROMPT =
+	'You are a witty tech translator for beginners. Explain tech terms using everyday analogies (cooking, cars, sports, etc.). Provide a detailed explanation with 2-3 examples and key characteristics. Keep it under 150 words. Be accurate and helpful.'
+
 const DE_BASE_SYSTEM_PROMPT =
 	'Du bist ein lustiger Tech-Übersetzer für Anfänger. Erkläre technische Begriffe mit alltäglichen Analogien (Kochen, Autos, Sport, etc.). Halte es unter 60 Wörtern. Sei präzise und hilfsbereit.'
+
+const DE_DETAILED_SYSTEM_PROMPT =
+	'Du bist ein lustiger Tech-Übersetzer für Anfänger. Erkläre technische Begriffe mit alltäglichen Analogien (Kochen, Autos, Sport, etc.). Gib eine detaillierte Erklärung mit 2-3 Beispielen und Hauptmerkmalen. Halte es unter 150 Wörtern. Sei präzise und hilfsbereit.'
 
 export type Language = 'en' | 'de'
 export type DownloadState =
@@ -60,6 +66,7 @@ function getModelPath(): string {
 async function buildEnhancedPrompt(
 	term: string,
 	language: Language,
+	detailed: boolean = false,
 ): Promise<{
 	systemPrompt: string
 	userPrompt: string
@@ -71,10 +78,18 @@ async function buildEnhancedPrompt(
 	const category = matchedTerm ? getTermCategory(term, index) : null
 
 	if (!matchedTerm) {
-		const baseSystem =
-			language === 'en' ? EN_BASE_SYSTEM_PROMPT : DE_BASE_SYSTEM_PROMPT
-		const userPrompt =
-			language === 'en'
+		const baseSystem = detailed
+			? language === 'en'
+				? EN_DETAILED_SYSTEM_PROMPT
+				: DE_DETAILED_SYSTEM_PROMPT
+			: language === 'en'
+				? EN_BASE_SYSTEM_PROMPT
+				: DE_BASE_SYSTEM_PROMPT
+		const userPrompt = detailed
+			? language === 'en'
+				? `Explain this tech term with a detailed everyday analogy, including examples and key characteristics: ${term}`
+				: `Erkläre diesen Fachbegriff mit einer detaillierten alltäglichen Analogie, einschließlich Beispiele und Hauptmerkmale: ${term}`
+			: language === 'en'
 				? `Explain this tech term with a simple everyday analogy: ${term}`
 				: `Erkläre diesen Fachbegriff mit einer einfachen alltäglichen Analogie: ${term}`
 
@@ -92,7 +107,7 @@ async function buildEnhancedPrompt(
 	let systemPrompt: string
 	if (language === 'en') {
 		systemPrompt = [
-			EN_BASE_SYSTEM_PROMPT,
+			detailed ? EN_DETAILED_SYSTEM_PROMPT : EN_BASE_SYSTEM_PROMPT,
 			'',
 			'You have expert knowledge about this specific term. Use the context below to ensure accuracy:',
 			'',
@@ -102,7 +117,7 @@ async function buildEnhancedPrompt(
 		].join('\n')
 	} else {
 		systemPrompt = [
-			DE_BASE_SYSTEM_PROMPT,
+			detailed ? DE_DETAILED_SYSTEM_PROMPT : DE_BASE_SYSTEM_PROMPT,
 			'',
 			'Du hast Expertenwissen über diesen spezifischen Begriff. Nutze den Kontext unten für Genauigkeit:',
 			'',
@@ -112,8 +127,11 @@ async function buildEnhancedPrompt(
 		].join('\n')
 	}
 
-	const userPrompt =
-		language === 'en'
+	const userPrompt = detailed
+		? language === 'en'
+			? `Explain this tech term with a detailed everyday analogy, including examples and key characteristics: ${matchedTerm.name}`
+			: `Erkläre diesen Fachbegriff mit einer detaillierten alltäglichen Analogie, einschließlich Beispiele und Hauptmerkmale: ${matchedTerm.name}`
+		: language === 'en'
 			? `Explain this tech term with a simple everyday analogy: ${matchedTerm.name}`
 			: `Erkläre diesen Fachbegriff mit einer einfachen alltäglichen Analogie: ${matchedTerm.name}`
 
@@ -194,7 +212,7 @@ export function useLocalLLM() {
 	}, [])
 
 	const generateAnalogy = useCallback(
-		async (term: string, language: Language) => {
+		async (term: string, language: Language, detailed: boolean = false) => {
 			if (!contextRef.current) {
 				const context = await initializeLlama()
 				if (!context) return
@@ -211,7 +229,7 @@ export function useLocalLLM() {
 
 			try {
 				const {systemPrompt, userPrompt, matchedTerm, category} =
-					await buildEnhancedPrompt(term, language)
+					await buildEnhancedPrompt(term, language, detailed)
 
 				const stopWords = [
 					'</s>',
@@ -234,7 +252,7 @@ export function useLocalLLM() {
 							{role: 'system', content: systemPrompt},
 							{role: 'user', content: userPrompt},
 						],
-						n_predict: 150,
+						n_predict: detailed ? 300 : 150,
 						stop: stopWords,
 						temperature: 0.7,
 					},
