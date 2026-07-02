@@ -424,4 +424,79 @@ export const webDevTerms: TermDefinition[] = [
 		],
 		commonComparisons: ['Apache', 'Caddy', 'Traefik'],
 	},
+	{
+		name: 'CLI',
+		aliases: [
+			'command-line interface',
+			'command line',
+			'command-line',
+			'terminal',
+		],
+		tags: ['tools', 'interface', 'developer-experience'],
+		whatItIs:
+			'a text-based interface where you type commands to interact with a computer instead of clicking buttons',
+		analogy:
+			'A CLI is like giving verbal orders to a very obedient assistant. You speak in precise commands like "list files" or "copy folder" and it does exactly what you say — fast, but you need to know the right words.',
+		keyTraits: ['Text-based', 'Fast', 'Scriptable', 'Keyboard-only'],
+		commonComparisons: ['GUI', 'TUI', 'Web interface'],
+	},
+	{
+		name: 'TUI',
+		aliases: ['terminal user interface', 'text user interface'],
+		tags: ['tools', 'interface', 'terminal'],
+		whatItIs:
+			'a user interface that runs in the terminal using text, boxes, and menus instead of graphics',
+		analogy:
+			'A TUI is like a CLI wearing a costume. It still runs in the terminal, but it adds visual elements like menus, progress bars, and sidebars — like a GUI, but made entirely of text characters.',
+		keyTraits: [
+			'Terminal-based',
+			'Visual elements',
+			'Keyboard navigation',
+			'Lightweight',
+		],
+		commonComparisons: ['CLI', 'GUI', 'Web UI'],
+	},
+	{
+		name: 'npm',
+		aliases: ['node package manager', 'npmjs'],
+		tags: ['package-manager', 'javascript', 'nodejs'],
+		whatItIs:
+			'the default package manager for JavaScript that lets you install, share, and manage code libraries',
+		analogy:
+			'npm is like an app store for code. Instead of downloading apps, you install packages (libraries) with one command, and it automatically fetches everything your project needs.',
+		keyTraits: [
+			'Package registry',
+			'Dependency management',
+			'Scripts',
+			'node_modules',
+		],
+		commonComparisons: ['yarn', 'pnpm', 'bun'],
+	},
+	{
+		name: 'Docker',
+		aliases: ['docker container', 'containers'],
+		tags: ['containers', 'devops', 'deployment'],
+		whatItIs:
+			'a platform that packages applications with all their dependencies into lightweight, portable containers',
+		analogy:
+			'Docker is like a shipping container for software. It wraps your app and everything it needs into one standardized box that runs the same way on any computer — no "it works on my machine" excuses.',
+		keyTraits: ['Containers', 'Isolation', 'Portable', 'Lightweight'],
+		commonComparisons: ['Virtual machines', 'Podman', 'Kubernetes'],
+	},
+	{
+		name: 'API',
+		aliases: ['application programming interface', 'rest api', 'web api'],
+		tags: ['web', 'integration', 'communication'],
+		whatItIs:
+			'a set of rules that lets different software applications communicate with each other',
+		analogy:
+			'An API is like a waiter in a restaurant. You (the app) tell the waiter (API) what you want, the waiter goes to the kitchen (server), and brings back your food (data) — you never need to go into the kitchen yourself.',
+		keyTraits: [
+			'Request/Response',
+			'Standardized',
+			'Documentation',
+			'Authentication',
+		],
+		commonComparisons: ['GraphQL', 'gRPC', 'WebSocket'],
+	},
 ]

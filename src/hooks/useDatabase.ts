@@ -41,7 +41,53 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
       category TEXT,
       timestamp INTEGER NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS custom_skills (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE,
+      aliases TEXT,
+      category TEXT NOT NULL DEFAULT 'custom',
+      what_it_is TEXT NOT NULL,
+      analogy TEXT NOT NULL,
+      key_traits TEXT,
+      common_comparisons TEXT,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS skill_overrides (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      term_name TEXT NOT NULL UNIQUE,
+      enabled INTEGER NOT NULL DEFAULT 1
+    );
+
+    CREATE TABLE IF NOT EXISTS favorites (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      original_term TEXT NOT NULL,
+      analogy TEXT NOT NULL,
+      language TEXT NOT NULL,
+      category TEXT,
+      created_at INTEGER NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS user_preferences (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL
+    );
   `)
+
+	// Migrate: add category column to history if missing
+	try {
+		await db.execAsync('ALTER TABLE history ADD COLUMN category TEXT')
+	} catch {
+		// column already exists
+	}
+	try {
+		await db.execAsync('ALTER TABLE favorites ADD COLUMN category TEXT')
+	} catch {
+		// column already exists
+	}
+
 	return db
 }
 

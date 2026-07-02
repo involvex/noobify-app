@@ -59,6 +59,18 @@ async function initDatabase(db: SQLiteDatabase): Promise<void> {
       value TEXT NOT NULL
     );
   `)
+
+	// Migrate: add category column to history if missing
+	try {
+		await db.execAsync('ALTER TABLE history ADD COLUMN category TEXT')
+	} catch {
+		// column already exists
+	}
+	try {
+		await db.execAsync('ALTER TABLE favorites ADD COLUMN category TEXT')
+	} catch {
+		// column already exists
+	}
 }
 
 function ThemeProvider({children}: {children: React.ReactNode}) {

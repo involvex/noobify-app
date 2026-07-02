@@ -15,16 +15,16 @@ const MODEL_URL =
 	'https://huggingface.co/bartowski/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/Qwen2.5-0.5B-Instruct-Q4_K_M.gguf'
 
 const EN_BASE_SYSTEM_PROMPT =
-	'You are a witty tech translator for beginners. Explain tech terms using everyday analogies (cooking, cars, sports, etc.). Keep it under 60 words. Be accurate and helpful.'
+	'You explain tech terms to beginners. Rules: 1) Stay strictly on the technical topic. 2) Do not describe words in the name literally. 3) Use one clear everyday analogy. 4) Write 2-4 plain sentences. 5) No markdown, no emojis, no bullet points, no special symbols. 6) Be factual, not creative.'
 
 const EN_DETAILED_SYSTEM_PROMPT =
-	'You are a witty tech translator for beginners. Explain tech terms using everyday analogies (cooking, cars, sports, etc.). Provide a detailed explanation with 2-3 examples and key characteristics. Keep it under 150 words. Be accurate and helpful.'
+	'You explain tech terms to beginners. Rules: 1) Stay strictly on the technical topic. 2) Do not describe words in the name literally. 3) Use one clear everyday analogy. 4) Write 4-6 plain sentences covering what it is, how it works, and one real example. 5) No markdown, no emojis, no bullet points, no special symbols. 6) Be factual, not creative.'
 
 const DE_BASE_SYSTEM_PROMPT =
-	'Du bist ein lustiger Tech-Übersetzer für Anfänger. Erkläre technische Begriffe mit alltäglichen Analogien (Kochen, Autos, Sport, etc.). Halte es unter 60 Wörtern. Sei präzise und hilfsbereit.'
+	'Du erklärst technische Begriffe Anfängern. Regeln: 1) Bleib strikt beim technischen Thema. 2) Beschreibe nicht die Wörter im Namen wörtlich. 3) Nutze eine klare Alltagsanalogie. 4) Schreibe 2-4 einfache Sätze. 5) Kein Markdown, keine Emojis, keine Aufzählungszeichen. 6) Sei sachlich, nicht kreativ.'
 
 const DE_DETAILED_SYSTEM_PROMPT =
-	'Du bist ein lustiger Tech-Übersetzer für Anfänger. Erkläre technische Begriffe mit alltäglichen Analogien (Kochen, Autos, Sport, etc.). Gib eine detaillierte Erklärung mit 2-3 Beispielen und Hauptmerkmalen. Halte es unter 150 Wörtern. Sei präzise und hilfsbereit.'
+	'Du erklärst technische Begriffe Anfängern. Regeln: 1) Bleib strikt beim technischen Thema. 2) Beschreibe nicht die Wörter im Namen wörtlich. 3) Nutze eine klare Alltagsanalogie. 4) Schreibe 4-6 einfache Sätze über was es ist, wie es funktioniert, und ein reales Beispiel. 5) Kein Markdown, keine Emojis, keine Aufzählungszeichen. 6) Sei sachlich, nicht kreativ.'
 
 export type Language = 'en' | 'de'
 export type DownloadState =
@@ -87,11 +87,11 @@ async function buildEnhancedPrompt(
 				: DE_BASE_SYSTEM_PROMPT
 		const userPrompt = detailed
 			? language === 'en'
-				? `Explain this tech term with a detailed everyday analogy, including examples and key characteristics: ${term}`
-				: `Erkläre diesen Fachbegriff mit einer detaillierten alltäglichen Analogie, einschließlich Beispiele und Hauptmerkmale: ${term}`
+				? `What is ${term}? Explain it simply.`
+				: `Was ist ${term}? Erkläre es einfach.`
 			: language === 'en'
-				? `Explain this tech term with a simple everyday analogy: ${term}`
-				: `Erkläre diesen Fachbegriff mit einer einfachen alltäglichen Analogie: ${term}`
+				? `What is ${term}? Explain it simply.`
+				: `Was ist ${term}? Erkläre es einfach.`
 
 		return {
 			systemPrompt: baseSystem,
@@ -102,38 +102,33 @@ async function buildEnhancedPrompt(
 	}
 
 	const context = generateContext(matchedTerm, language)
-	const categoryLabel = category ?? 'technology'
 
 	let systemPrompt: string
 	if (language === 'en') {
 		systemPrompt = [
 			detailed ? EN_DETAILED_SYSTEM_PROMPT : EN_BASE_SYSTEM_PROMPT,
 			'',
-			'You have expert knowledge about this specific term. Use the context below to ensure accuracy:',
+			'Context about this term (use for accuracy, do not copy):',
 			'',
 			context,
-			'',
-			`The term belongs to the "${categoryLabel}" category.`,
 		].join('\n')
 	} else {
 		systemPrompt = [
 			detailed ? DE_DETAILED_SYSTEM_PROMPT : DE_BASE_SYSTEM_PROMPT,
 			'',
-			'Du hast Expertenwissen über diesen spezifischen Begriff. Nutze den Kontext unten für Genauigkeit:',
+			'Kontext über diesen Begriff (zur Genauigkeit verwenden, nicht kopieren):',
 			'',
 			context,
-			'',
-			`Der Begriff gehört zur Kategorie "${categoryLabel}".`,
 		].join('\n')
 	}
 
 	const userPrompt = detailed
 		? language === 'en'
-			? `Explain this tech term with a detailed everyday analogy, including examples and key characteristics: ${matchedTerm.name}`
-			: `Erkläre diesen Fachbegriff mit einer detaillierten alltäglichen Analogie, einschließlich Beispiele und Hauptmerkmale: ${matchedTerm.name}`
+			? `What is ${matchedTerm.name}? Explain it simply.`
+			: `Was ist ${matchedTerm.name}? Erkläre es einfach.`
 		: language === 'en'
-			? `Explain this tech term with a simple everyday analogy: ${matchedTerm.name}`
-			: `Erkläre diesen Fachbegriff mit einer einfachen alltäglichen Analogie: ${matchedTerm.name}`
+			? `What is ${matchedTerm.name}? Explain it simply.`
+			: `Was ist ${matchedTerm.name}? Erkläre es einfach.`
 
 	return {systemPrompt, userPrompt, matchedTerm, category}
 }
@@ -252,9 +247,9 @@ export function useLocalLLM() {
 							{role: 'system', content: systemPrompt},
 							{role: 'user', content: userPrompt},
 						],
-						n_predict: detailed ? 300 : 150,
+						n_predict: detailed ? 512 : 256,
 						stop: stopWords,
-						temperature: 0.7,
+						temperature: 0.5,
 					},
 					data => {
 						fullText += data.token

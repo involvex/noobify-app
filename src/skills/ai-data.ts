@@ -498,4 +498,87 @@ export const aiDataTerms: TermDefinition[] = [
 		keyTraits: ['Foundation', 'Hidden', 'Essential', 'Shared'],
 		commonComparisons: ['Platform', 'Application', 'Data'],
 	},
+	{
+		name: 'ComfyUI',
+		aliases: ['comfy ui', 'comfy-ui'],
+		tags: ['ai', 'image-generation', 'stable-diffusion', 'gui'],
+		whatItIs:
+			'a node-based graphical user interface for Stable Diffusion that lets you build custom image generation workflows by connecting processing blocks',
+		analogy:
+			'ComfyUI is like a visual programming tool for image creation. Instead of clicking buttons, you connect building blocks like Lego — one block generates noise, another refines it, another adds detail — until you get your final image.',
+		keyTraits: [
+			'Node-based',
+			'Custom workflows',
+			'Stable Diffusion',
+			'Visual scripting',
+		],
+		commonComparisons: ['Automatic1111', 'Fooocus', 'Midjourney'],
+	},
+	{
+		name: 'Stable Diffusion',
+		aliases: ['sd', 'stable-diffusion'],
+		tags: ['ai', 'image-generation', 'deep-learning', 'open-source'],
+		whatItIs:
+			'an open-source AI model that generates images from text descriptions by gradually removing noise from a random pattern',
+		analogy:
+			'Stable Diffusion is like a sculptor starting with a rough block of marble and slowly chiseling away until the final image emerges. You describe what you want, and it carves it out of static.',
+		keyTraits: [
+			'Open-source',
+			'Text-to-image',
+			'Local execution',
+			'Fine-tunable',
+		],
+		commonComparisons: ['DALL-E', 'Midjourney', 'Firefly'],
+	},
+	{
+		name: 'Large Language Model',
+		aliases: ['llm', 'large-language-model'],
+		tags: ['ai', 'nlp', 'deep-learning', 'transformers'],
+		whatItIs:
+			'a neural network trained on massive text data that can understand and generate human language',
+		analogy:
+			'An LLM is like a super well-read librarian. It has read billions of pages and can answer questions, write essays, or explain concepts — but it predicts the next word based on patterns, not true understanding.',
+		keyTraits: [
+			'Transformer architecture',
+			'Pre-trained',
+			'Generative',
+			'Context window',
+		],
+		commonComparisons: ['GPT', 'Claude', 'Gemini'],
+	},
+	{
+		name: 'RAG',
+		aliases: [
+			'retrieval-augmented-generation',
+			'retrieval augmented generation',
+		],
+		tags: ['ai', 'nlp', 'search', 'llm'],
+		whatItIs:
+			'a technique that combines retrieving relevant documents from a database with generating answers using an LLM',
+		analogy:
+			'RAG is like an open-book exam. Instead of relying only on memory (the LLM), the system looks up relevant notes (retrieval) before writing the answer, making it more accurate and up-to-date.',
+		keyTraits: [
+			'Retrieval + Generation',
+			'Document-aware',
+			'Reduces hallucination',
+			'Knowledge grounding',
+		],
+		commonComparisons: ['Fine-tuning', 'Prompt engineering', 'Vector search'],
+	},
+	{
+		name: 'LoRA',
+		aliases: ['low-rank adaptation', 'low-rank-adaptation'],
+		tags: ['ai', 'fine-tuning', 'machine-learning', 'efficiency'],
+		whatItIs:
+			'a method to fine-tune large AI models by adding small trainable adapter layers instead of retraining the entire model',
+		analogy:
+			'LoRA is like adding a custom paint job and stickers to a car instead of rebuilding the whole engine. The base model stays the same, but you add small patches that change how it behaves for your specific task.',
+		keyTraits: [
+			'Parameter-efficient',
+			'Adapter layers',
+			'Low memory',
+			'Task-specific',
+		],
+		commonComparisons: ['Full fine-tuning', 'QLoRA', 'Prompt tuning'],
+	},
 ]
