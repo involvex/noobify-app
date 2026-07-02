@@ -7,14 +7,16 @@ import {
 	ActivityIndicator,
 	ProgressBar,
 	Surface,
+	IconButton,
 } from 'react-native-paper'
 import {View, StyleSheet, ScrollView, Share} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {useState, useCallback} from 'react'
+import {useState, useCallback, useEffect} from 'react'
 
 import {useLocalLLM, type Language} from '@/hooks/useLocalLLM'
 import {addHistoryItem} from '@/hooks/useDatabase'
 import {useThemeContext} from '@/constants/themes'
+import {useVoice} from '@/hooks/useVoice'
 
 const CATEGORY_LABELS: Record<string, {en: string; de: string}> = {
 	'web-dev': {en: 'Web Development', de: 'Webentwicklung'},
@@ -142,6 +144,15 @@ export default function TranslatorScreen() {
 	const [language, setLanguage] = useState<Language>('en')
 	const [hasGenerated, setHasGenerated] = useState(false)
 	const {colors} = useThemeContext()
+	const {
+		state: voiceState,
+		transcript,
+		error: _voiceError,
+		isSupported: voiceSupported,
+		startListening,
+		stopListening,
+		resetTranscript,
+	} = useVoice()
 
 	const {
 		downloadState,
@@ -155,6 +166,12 @@ export default function TranslatorScreen() {
 		generateAnalogy,
 		retryDownload,
 	} = useLocalLLM()
+
+	useEffect(() => {
+		if (transcript) {
+			setInputTerm(transcript)
+		}
+	}, [transcript])
 
 	const handleSubmit = useCallback(async () => {
 		if (!inputTerm.trim()) return
@@ -204,7 +221,16 @@ export default function TranslatorScreen() {
 	const handleClear = useCallback(() => {
 		setInputTerm('')
 		setHasGenerated(false)
-	}, [])
+		resetTranscript()
+	}, [resetTranscript])
+
+	const handleVoiceToggle = useCallback(() => {
+		if (voiceState === 'listening') {
+			stopListening()
+		} else {
+			startListening(language)
+		}
+	}, [voiceState, language, startListening, stopListening])
 
 	const handleReroll = useCallback(async () => {
 		if (!inputTerm.trim()) return
@@ -318,29 +344,65 @@ export default function TranslatorScreen() {
 						colors={colors}
 					/>
 
-					<TextInput
-						mode="flat"
-						label={
-							language === 'en'
-								? 'Enter tech term...'
-								: 'Fachbegriff eingeben...'
-						}
-						placeholder={
-							language === 'en'
-								? 'e.g. recursion, API, blockchain'
-								: 'z.B. Rekursion, API, Blockchain'
-						}
-						value={inputTerm}
-						onChangeText={setInputTerm}
-						style={[styles.input, {backgroundColor: colors.surface}]}
-						contentStyle={[styles.inputContent, {color: colors.onSurface}]}
-						textColor={colors.onSurface}
-						underlineColor={colors.border}
-						activeUnderlineColor={colors.primary}
-						returnKeyType="send"
-						onSubmitEditing={handleSubmit}
-						disabled={generationState === 'generating'}
-					/>
+					<View style={styles.inputRow}>
+						<TextInput
+							mode="flat"
+							label={
+								language === 'en'
+									? 'Enter tech term...'
+									: 'Fachbegriff eingeben...'
+							}
+							placeholder={
+								language === 'en'
+									? 'e.g. recursion, API, blockchain'
+									: 'z.B. Rekursion, API, Blockchain'
+							}
+							value={inputTerm}
+							onChangeText={setInputTerm}
+							style={[styles.input, {backgroundColor: colors.surface, flex: 1}]}
+							contentStyle={[styles.inputContent, {color: colors.onSurface}]}
+							textColor={colors.onSurface}
+							underlineColor={colors.border}
+							activeUnderlineColor={colors.primary}
+							returnKeyType="send"
+							onSubmitEditing={handleSubmit}
+							disabled={generationState === 'generating'}
+						/>
+						{voiceSupported && (
+							<IconButton
+								icon={
+									voiceState === 'listening'
+										? 'microphone'
+										: 'microphone-outline'
+								}
+								size={28}
+								iconColor={
+									voiceState === 'listening' ? colors.error : colors.primary
+								}
+								onPress={handleVoiceToggle}
+								disabled={
+									generationState === 'generating' || initState !== 'ready'
+								}
+								style={[
+									styles.voiceButton,
+									voiceState === 'listening' && {
+										backgroundColor: 'rgba(255, 58, 92, 0.12)',
+									},
+								]}
+							/>
+						)}
+					</View>
+
+					{voiceState === 'listening' && (
+						<View style={styles.voiceIndicator}>
+							<View
+								style={[styles.voicePulse, {backgroundColor: colors.error}]}
+							/>
+							<Text style={[styles.voiceText, {color: colors.error}]}>
+								{language === 'en' ? 'Listening...' : 'Höre zu...'}
+							</Text>
+						</View>
+					)}
 
 					<View style={styles.buttonRow}>
 						{hasGenerated && (
@@ -617,5 +679,29 @@ const styles = StyleSheet.create({
 	},
 	termTraits: {
 		fontSize: 12,
+	},
+	inputRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8,
+	},
+	voiceButton: {
+		margin: 0,
+	},
+	voiceIndicator: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: 8,
+		paddingVertical: 8,
+	},
+	voicePulse: {
+		width: 8,
+		height: 8,
+		borderRadius: 4,
+	},
+	voiceText: {
+		fontSize: 12,
+		fontWeight: '500',
 	},
 })

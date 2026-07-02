@@ -47,7 +47,14 @@
 			"expo-font",
 			"expo-image",
 			"expo-status-bar",
-			"expo-web-browser"
+			"expo-web-browser",
+			[
+				"@react-native-voice/voice",
+				{
+					"microphonePermission": "Allow Noobify to access your microphone for speech-to-text.",
+					"speechRecognitionPermission": "Allow Noobify to recognize your speech."
+				}
+			]
 		],
 		"experiments": {
 			"typedRoutes": true,
