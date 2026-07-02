@@ -13,4 +13,13 @@ config.resolver = {
   ],
 };
 
+config.watcher = {
+  ...config.watcher,
+  additionalExts: [],
+  watchman: {
+    ...config.watcher?.watchman,
+    deferStates: [],
+  },
+};
+
 module.exports = config;
