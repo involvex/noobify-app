@@ -163,13 +163,13 @@ export default function AboutScreen() {
 						mode="outlined"
 						placeholder={
 							field.field_key === 'name'
-								? 'e.g. Lukas'
+								? 'e.g. involvex'
 								: field.field_key === 'github'
-									? 'e.g. github.com/lukas'
+									? 'e.g. github.com/involvex'
 									: field.field_key === 'projects'
-										? 'e.g. Noobify-App, Portfolio Website'
+										? 'e.g. Awesome Github App, Youtube-Music-Cli'
 										: field.field_key === 'tech_stack'
-											? 'e.g. React Native, TypeScript, Python'
+											? 'e.g. Bun, React Native, TypeScript, Python'
 											: field.field_key === 'bio'
 												? 'e.g. Full-stack dev building local-first apps'
 												: 'Add your info...'
