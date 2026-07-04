@@ -6,7 +6,6 @@ import {
 	deleteProfileField,
 	buildProfileContext,
 	exportProfile,
-	importProfile,
 	type ProfileField,
 } from '@/hooks/useDatabase'
 import {
@@ -104,18 +103,6 @@ export default function AboutScreen() {
 			message: json,
 			title: 'Noobify Profile Export',
 		})
-	}, [])
-
-	const handleImport = useCallback(async () => {
-		const {Share} = await import('react-native')
-		const result = await Share.share({
-			message: 'Paste your profile JSON in the app and send it to import.',
-			title: 'Noobify Profile Import',
-		})
-		if (result.action === 'sharedAction' && result.activityType) {
-			// On Android, import via clipboard would be needed
-			// For now, show instructions
-		}
 	}, [])
 
 	const renderField = (field: ProfileField) => {
