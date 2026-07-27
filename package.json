@@ -7,6 +7,8 @@
 	"main": "expo-router/entry",
 	"scripts": {
 		"android": "expo run:android",
+		"android:build": "expo run:android --variant release",
+		"android:build:clean": "expo prebuild --platform android --clean --no-install && expo run:android --variant release",
 		"check": "bun run lint:fix && bunx prettier --write . && bunx expo install --check && bunx expo-doctor --verbose && bun run typecheck",
 		"format": "prettier . --write",
 		"ios": "expo run:ios",

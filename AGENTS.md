@@ -92,17 +92,21 @@ bun run check
 ### Building
 
 ```bash
+# Build standalone APK (works without dev server at runtime)
+bun run android:build
+
+# Clean rebuild: regenerates android/ then builds standalone APK
+bun run android:build:clean
+
+# Or build manually:
 # Generate Android native project
 bunx expo prebuild --platform android
 
 # Clean and regenerate native project
 bunx expo prebuild --clean --platform android
 
-# Build release APK
+# Build standalone APK (release variant with debug signing)
 cd android && ./gradlew assembleRelease
-
-# Build debug APK
-cd android && ./gradlew assembleDebug
 ```
 
 ### Utilities
